@@ -79,7 +79,7 @@ namespace Whetstone.Contracts
         [Test]
         public void IfPresent_ActionIsNull_ThrowsArgumentNullException()
         {
-            Assert.That(() => Optional.Present(0).IfPresent((Action<int>)null), Throws.ArgumentNullException);
+            Assert.That(() => Optional.Present(0).IfPresent(null), Throws.ArgumentNullException);
         }
 
         [Test]
@@ -197,8 +197,10 @@ namespace Whetstone.Contracts
             Assert.That(Optional.Present(1), Is.EquivalentTo(new []{1}));
         }
 
-        [TestCaseSource(nameof(EqualsTestCases))]
-        public bool Equals_Correct(object AOptional, object AOther)
+        [TestCaseSource(nameof(OptOptEqualsTestCases))]
+        [TestCaseSource(nameof(OptIntEqualsTestCases))]
+        [TestCaseSource(nameof(OptOptInequalTestCase))]
+        public bool Equals_OptAny_Correct(object AOptional, object AOther)
         {
             return AOptional.Equals(AOther);
         }
@@ -252,7 +254,7 @@ namespace Whetstone.Contracts
         {
             Assert.That(() =>
             {
-                int I = Optional.Absent<int>();
+                int _ = Optional.Absent<int>();
             }, Throws.InvalidOperationException);
         }
 
@@ -295,18 +297,44 @@ namespace Whetstone.Contracts
             Assert.That(Optional.Present(0) | 1, Is.EqualTo(0));
         }
 
-        public static IEnumerable EqualsTestCases
+        [TestCaseSource(nameof(OptOptEqualsTestCases))]
+        public bool EqOp_OptOpt_Correct(Optional<int> ALeft, Optional<int> ARight)
+        {
+            return ALeft == ARight && !(ALeft != ARight);
+        }
+
+        [TestCaseSource(nameof(OptIntEqualsTestCases))]
+        public bool EqOp_OptVal_Correct(Optional<int> ALeft, int ARight)
+        {
+            return ALeft == ARight && !(ALeft != ARight);
+        }
+
+        public static IEnumerable OptOptEqualsTestCases
         {
             get
             {
                 yield return new TestCaseData(Optional.Absent<int>(), Optional.Absent<int>()).Returns(true);
-                yield return new TestCaseData(Optional.Absent<int>(), Optional.Absent<string>()).Returns(false);
                 yield return new TestCaseData(Optional.Present(0), Optional.Present(0)).Returns(true);
                 yield return new TestCaseData(Optional.Present(0), Optional.Present(1)).Returns(false);
+            }
+        }
 
+        public static IEnumerable OptIntEqualsTestCases
+        {
+            get
+            {
                 yield return new TestCaseData(Optional.Absent<int>(), 0).Returns(false);
                 yield return new TestCaseData(Optional.Present(0), 0).Returns(true);
                 yield return new TestCaseData(Optional.Present(0), 1).Returns(false);
+            }
+        }
+
+        public static IEnumerable OptOptInequalTestCase
+        {
+            get
+            {
+                yield return new TestCaseData(Optional.Absent<int>(), Optional.Absent<string>()).Returns(false);
+                yield return new TestCaseData(Optional.Present(0), Optional.Present("asd")).Returns(false);
             }
         }
     }
@@ -371,7 +399,7 @@ namespace Whetstone.Contracts
         [Test]
         public void IfIs_Is_ReturnsCast()
         {
-            Assert.That(((object)"abc").IfIs<string>().Value, Is.TypeOf<string>().And.EqualTo("abc"));
+            Assert.That("abc".IfIs<string>().Value, Is.TypeOf<string>().And.EqualTo("abc"));
         }
 
         [Test]
