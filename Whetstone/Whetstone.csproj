@@ -39,11 +39,22 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\Enumerators\IDirected.cs" />
+    <Compile Include="Collections\Enumerators\EnumeratorDirection.cs" />
+    <Compile Include="Collections\Enumerators\EnumeratorLengthType.cs" />
+    <Compile Include="Collections\Enumerators\IFixedLength.cs" />
+    <Compile Include="Collections\Enumerators\IIndexed.cs" />
+    <Compile Include="Collections\Enumerators\IPartitionable.cs" />
+    <Compile Include="Collections\Enumerators\IRandomAccess.cs" />
+    <Compile Include="Collections\Enumerators\IReversable.cs" />
+    <Compile Include="Collections\IManipulator.cs" />
+    <Compile Include="Collections\Manipulators\IStructural.cs" />
     <Compile Include="Contracts\Optional.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
