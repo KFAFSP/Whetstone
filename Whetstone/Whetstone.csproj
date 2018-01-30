@@ -48,6 +48,7 @@
     <Compile Include="Collections\Enumerators\EnumeratorLengthType.cs" />
     <Compile Include="Collections\Enumerators\IFixedLength.cs" />
     <Compile Include="Collections\Enumerators\IIndexed.cs" />
+    <Compile Include="Collections\Enumerators\IndexRangeEnumerator.cs" />
     <Compile Include="Collections\Enumerators\IPartitionable.cs" />
     <Compile Include="Collections\Enumerators\IRandomAccess.cs" />
     <Compile Include="Collections\Enumerators\IReversable.cs" />

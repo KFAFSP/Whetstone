@@ -14,14 +14,10 @@ namespace Whetstone.Collections.Enumerators
         /// Reverse the direction of the enumeration.
         /// </summary>
         /// <remarks>
-        /// <para>
+        /// Calling this method causes the enumerator to bind.
         /// Reversing the direction may not change the position of the enumerator.
-        /// </para>
-        /// <para>
-        /// Calling reverse before the start or after the end results in an <see cref="InvalidOperationException"/>.
-        /// </para>
         /// </remarks>
-        /// <exception cref="InvalidOperationException">The enumerator is out of bounds.</exception>
+        /// <exception cref="InvalidOperationException">The enumerator is disposed.</exception>
         void Reverse();
     }
 }

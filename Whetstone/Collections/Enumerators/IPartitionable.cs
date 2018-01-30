@@ -16,15 +16,11 @@ namespace Whetstone.Collections.Enumerators
         /// Try to partition this <see cref="IPartitionable"/> enumerator into two of approximately equal workload.
         /// </summary>
         /// <remarks>
-        /// <para>
-        /// Calls to this method are not valid before the start or after the end.
-        /// </para>
-        /// <para>
+        /// Calling this method will cause the enumerator to bind.
         /// Calling this method manipulates the state of the current enumerator AND returns a new one.
-        /// </para>
         /// </remarks>
         /// <returns>A new <see cref="IPartitionable"/> that contains the second partition; or <see langword="null"/> if partitioning failed / was not feasible.</returns>
-        /// <exception cref="InvalidOperationException">The enumerator is out of bounds.</exception>
+        /// <exception cref="InvalidOperationException">The enumerator is disposed.</exception>
         [MustUseReturnValue]
         [CanBeNull]
         IPartitionable TryPartition();

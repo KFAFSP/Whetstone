@@ -108,7 +108,11 @@ namespace Whetstone.Collections.Enumerators
 
         #region IEnumerator<T>
         /// <inheritdoc />
-        public T Current => IsReady ? FCurrent : throw new InvalidOperationException("Enumerator is not bound.");
+        public T Current
+        {
+            get => IsReady ? FCurrent : throw new InvalidOperationException("Enumerator is not bound.");
+            protected set => FCurrent = value;
+        }
         #endregion
 
         /// <summary>
@@ -120,9 +124,18 @@ namespace Whetstone.Collections.Enumerators
         /// </summary>
         public bool IsReady => FState == EnumeratorState.Ready;
         /// <summary>
-        /// Get a value indicating whether this enumerator has exhausted it's data source.
+        /// Get or set a value indicating whether this enumerator has exhausted it's data source.
         /// </summary>
-        public bool IsExhausted => FState == EnumeratorState.Exhausted;
+        public bool IsExhausted {
+            get => FState == EnumeratorState.Exhausted;
+            set
+            {
+                if (FState == EnumeratorState.Exhausted && !value)
+                    FState = EnumeratorState.Ready;
+                else if (FState == EnumeratorState.Ready && value)
+                    FState = EnumeratorState.Exhausted;
+            }
+        }
         /// <summary>
         /// Get a valud indicating whether this enumerator has been disposed.
         /// </summary>
