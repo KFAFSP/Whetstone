@@ -11,15 +11,15 @@ namespace Whetstone.Collections.Manipulators
     public interface IStructural : IManipulator
     {
         /// <summary>
-        /// Inserts an item after the current position and moves to it.
+        /// Insert an item at the current position and move to the next.
         /// </summary>
         /// <remarks>
-        /// Inserting is valid even before the start of the enumeration, but not after the end.
+        /// Inserting is not valid before the start of the enumeration, but after the end.
         /// </remarks>
         /// <param name="AItem">The item to insert.</param>
         /// <returns><c>true</c> if the item was inserted and the enumeration moved; otherwise <c>false</c>.</returns>
-        /// <exception cref="InvalidOperationException">The enumeration has already ended.</exception>
-        bool InsertAfterAndMoveNext(object AItem);
+        /// <exception cref="InvalidOperationException">The enumeration has not started.</exception>
+        bool InsertAndMoveNext(object AItem);
 
         /// <summary>
         /// Removes the item at the current position and automatically moves to the next item.
@@ -40,14 +40,14 @@ namespace Whetstone.Collections.Manipulators
     public interface IStructural<T> : IStructural, IManipulator<T>
     {
         /// <summary>
-        /// Inserts an item after the current position and moves to it.
+        /// Insert an item at the current position and move to the next.
         /// </summary>
         /// <remarks>
-        /// Inserting is valid even before the start of the enumeration, but not after the end.
+        /// Inserting is not valid before the start of the enumeration, but after the end.
         /// </remarks>
         /// <param name="AItem">The item to insert.</param>
         /// <returns><c>true</c> if the item was inserted and the enumeration moved; otherwise <c>false</c>.</returns>
-        /// <exception cref="InvalidOperationException">The enumeration has already ended.</exception>
-        bool InsertAfterAndMoveNext(T AItem);
+        /// <exception cref="InvalidOperationException">The enumeration has not started.</exception>
+        bool InsertAndMoveNext(T AItem);
     }
 }
