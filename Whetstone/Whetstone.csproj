@@ -51,6 +51,7 @@
     <Compile Include="Collections\Enumerators\IReversable.cs" />
     <Compile Include="Collections\EqualsEqualityComparer.cs" />
     <Compile Include="Collections\ICollection.cs" />
+    <Compile Include="Collections\IList.cs" />
     <Compile Include="Collections\IManipulator.cs" />
     <Compile Include="Collections\IMutableCollection.cs" />
     <Compile Include="Collections\Manipulators\IStructural.cs" />
