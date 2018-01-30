@@ -1,3 +1,5 @@
+using System;
+
 using JetBrains.Annotations;
 
 using SC = System.Collections;
@@ -24,6 +26,10 @@ namespace Whetstone.Collections.Enumerators
         /// <summary>
         /// Get the index of the current item.
         /// </summary>
+        /// <remarks>
+        /// Calling reverse before the start or after the end results in an <see cref="InvalidOperationException"/>.
+        /// </remarks>
+        /// <exception cref="InvalidOperationException">The enumerator is out of bounds.</exception>
         [NotNull]
         TIndex Index { [Pure] get; }
     }
