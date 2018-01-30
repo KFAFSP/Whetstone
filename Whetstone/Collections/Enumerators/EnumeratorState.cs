@@ -23,7 +23,7 @@ namespace Whetstone.Collections.Enumerators
         /// <remarks>
         /// All operations are valid in this state.
         /// </remarks>
-        Bound = 1,
+        Ready = 1,
         /// <summary>
         /// The enumerator is bound but has reached the end.
         /// </summary>
