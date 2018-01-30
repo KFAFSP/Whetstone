@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Collections\DelegateComparer.cs" />
     <Compile Include="Collections\DelegateEqualityComparer.cs" />
+    <Compile Include="Collections\Enumerators\EnumeratorState.cs" />
     <Compile Include="Collections\Enumerators\IDirected.cs" />
     <Compile Include="Collections\Enumerators\EnumeratorDirection.cs" />
     <Compile Include="Collections\Enumerators\EnumeratorLengthType.cs" />
