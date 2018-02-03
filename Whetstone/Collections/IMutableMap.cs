@@ -9,10 +9,10 @@ using Whetstone.Contracts;
 namespace Whetstone.Collections
 {
     /// <summary>
-    /// Represents a mutable <see cref="ILookup"/>.
+    /// Represents a mutable <see cref="IMap"/>.
     /// </summary>
     [PublicAPI]
-    public interface IMutableLookup : ILookup, IMutableCollection<IKeyValuePair>
+    public interface IMutableMap : IMap, IMutableCollection<IKeyValuePair>
     {
         /// <summary>
         /// Set the value associated with the specified key.
@@ -55,12 +55,12 @@ namespace Whetstone.Collections
     }
 
     /// <summary>
-    /// Represents a strongly typed mutable <see cref="ILookup{K,V}"/>.
+    /// Represents a strongly typed mutable <see cref="IMap{K,V}"/>.
     /// </summary>
     /// <typeparam name="K">The key type.</typeparam>
     /// <typeparam name="V">The value type.</typeparam>
     [PublicAPI]
-    public interface IMutableLookup<K, V> : ILookup<K, V>, IMutableLookup, IMutableCollection<IKeyValuePair<K, V>>
+    public interface IMutableMap<K, V> : IMap<K, V>, IMutableMap, IMutableCollection<IKeyValuePair<K, V>>
     {
         /// <summary>
         /// Set the value associated with the specified key.

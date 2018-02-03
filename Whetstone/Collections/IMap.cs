@@ -12,7 +12,7 @@ namespace Whetstone.Collections
     /// Represents a <see cref="ICollection"/> of values associated to unique keys.
     /// </summary>
     [PublicAPI]
-    public interface ILookup : ICollection<IKeyValuePair>
+    public interface IMap : ICollection<IKeyValuePair>
     {
         /// <summary>
         /// Try to get the value for the specified key.
@@ -57,7 +57,7 @@ namespace Whetstone.Collections
     /// <typeparam name="K">The key type.</typeparam>
     /// <typeparam name="V">The value type.</typeparam>
     [PublicAPI]
-    public interface ILookup<K, V> : ILookup, ICollection<IKeyValuePair<K, V>>
+    public interface IMap<K, V> : IMap, ICollection<IKeyValuePair<K, V>>
     {
         /// <summary>
         /// Try to get the value for the specified key.

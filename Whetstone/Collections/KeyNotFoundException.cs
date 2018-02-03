@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 namespace Whetstone.Collections
 {
     /// <summary>
-    /// Indicates a missing key in a <see cref="ILookup"/>.
+    /// Indicates a missing key in a <see cref="IMap"/>.
     /// </summary>
     [PublicAPI]
     public class KeyNotFoundException : Exception
