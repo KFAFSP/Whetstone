@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+
+using JetBrains.Annotations;
 
 namespace Whetstone.Collections
 {
@@ -12,6 +14,7 @@ namespace Whetstone.Collections
         /// Add an item to the collection.
         /// </summary>
         /// <param name="AItem">The item to add.</param>
+        /// <exception cref="ArgumentException"><paramref name="AItem"/> is of an invalid type.</exception>
         void Add(object AItem);
         /// <summary>
         /// Remove an item from the collection.

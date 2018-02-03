@@ -55,9 +55,12 @@
     <Compile Include="Collections\EqualsEqualityComparer.cs" />
     <Compile Include="Collections\ICollection.cs" />
     <Compile Include="Collections\IList.cs" />
+    <Compile Include="Collections\IManipulatable.cs" />
     <Compile Include="Collections\IManipulator.cs" />
     <Compile Include="Collections\IMutableCollection.cs" />
     <Compile Include="Collections\IMutableList.cs" />
+    <Compile Include="Collections\IMutableSet.cs" />
+    <Compile Include="Collections\ISet.cs" />
     <Compile Include="Collections\Manipulators\IStructural.cs" />
     <Compile Include="Collections\ReferenceEqualityComparer.cs" />
     <Compile Include="Contracts\Optional.cs" />
