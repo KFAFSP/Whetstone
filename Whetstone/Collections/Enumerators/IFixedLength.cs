@@ -1,3 +1,5 @@
+using System;
+
 using JetBrains.Annotations;
 
 using SC = System.Collections;
@@ -8,7 +10,7 @@ namespace Whetstone.Collections.Enumerators
     /// Trait interface for a <see cref="SC.IEnumerator"/> that enumerates a fixed amount of items.
     /// </summary>
     [PublicAPI]
-    public interface IFixedLength : SC.IEnumerator
+    public interface IFixedLength : SC.IEnumerator, IDisposable
     {
         /// <summary>
         /// Get the number of items remaining in this enumeration.

@@ -1,4 +1,6 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+
+using JetBrains.Annotations;
 
 using SC = System.Collections;
 
@@ -8,7 +10,7 @@ namespace Whetstone.Collections.Enumerators
     /// Trait interface for an <see cref="SC.IEnumerator"/> that is moving in a defined direction.
     /// </summary>
     [PublicAPI]
-    public interface IDirected : SC.IEnumerator
+    public interface IDirected : SC.IEnumerator, IDisposable
     {
         /// <summary>
         /// The <see cref="EnumeratorDirection"/> that the enumeration is moving in.

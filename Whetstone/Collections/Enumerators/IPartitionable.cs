@@ -10,7 +10,7 @@ namespace Whetstone.Collections.Enumerators
     /// Trait interface for a <see cref="SC.IEnumerator"/> that can be partitioned for parallel enumeration.
     /// </summary>
     [PublicAPI]
-    public interface IPartitionable : SC.IEnumerator
+    public interface IPartitionable : SC.IEnumerator, IDisposable
     {
         /// <summary>
         /// Try to partition this <see cref="IPartitionable"/> enumerator into two of approximately equal workload.

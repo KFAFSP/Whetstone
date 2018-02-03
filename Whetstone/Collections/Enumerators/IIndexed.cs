@@ -15,7 +15,7 @@ namespace Whetstone.Collections.Enumerators
     /// </remarks>
     /// <typeparam name="TIndex">The type of the index.</typeparam>
     [PublicAPI]
-    public interface IIndexed<TIndex> : SC.IEnumerator
+    public interface IIndexed<TIndex> : SC.IEnumerator, IDisposable
     {
         /// <summary>
         /// Get the comparer for the item indices.
