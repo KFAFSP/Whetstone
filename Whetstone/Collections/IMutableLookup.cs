@@ -15,6 +15,19 @@ namespace Whetstone.Collections
     public interface IMutableLookup : ILookup, IMutableCollection<IKeyValuePair>
     {
         /// <summary>
+        /// Set the value associated with the specified key.
+        /// </summary>
+        /// <param name="AKey">The key to set.</param>
+        /// <param name="AValue">The value to put.</param>
+        /// <returns>
+        /// An absent <see cref="Optional{T}"/> if there was no previous value for <paramref name="AKey"/>,
+        /// or a present <see cref="Optional{T}"/> with the overwritten value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="AKey"/> is of an invalid type.</exception>
+        Optional<object> Put([NotNull] object AKey, object AValue);
+
+        /// <summary>
         /// Try to delete the value for the specified key.
         /// </summary>
         /// <param name="AKey">The key to drop.</param>
@@ -49,6 +62,18 @@ namespace Whetstone.Collections
     [PublicAPI]
     public interface IMutableLookup<K, V> : ILookup<K, V>, IMutableLookup, IMutableCollection<IKeyValuePair<K, V>>
     {
+        /// <summary>
+        /// Set the value associated with the specified key.
+        /// </summary>
+        /// <param name="AKey">The key to set.</param>
+        /// <param name="AValue">The value to put.</param>
+        /// <returns>
+        /// An absent <see cref="Optional{T}"/> if there was no previous value for <paramref name="AKey"/>,
+        /// or a present <see cref="Optional{T}"/> with the overwritten value.
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
+        Optional<V> Put([NotNull] K AKey, V AValue);
+
         /// <summary>
         /// Try to delete the value for the specified key.
         /// </summary>
