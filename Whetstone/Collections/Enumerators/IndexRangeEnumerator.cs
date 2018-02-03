@@ -17,10 +17,6 @@ namespace Whetstone.Collections.Enumerators
         IRandomAccess<int>,
         IPartitionable
     {
-        private EnumeratorDirection FDirection;
-        private int FLower;
-        private int FUpper;
-
         private int FIndex;
 
         /// <summary>
@@ -39,7 +35,8 @@ namespace Whetstone.Collections.Enumerators
         /// </summary>
         /// <param name="ALower">The lower bound.</param>
         /// <param name="AUpper">The upper bound.</param>
-        /// <returns>A new <see cref="IndexRangeEnumerator{T}"/> instance.</returns>
+        /// <returns>A new <see cref="IndexRangeEnumerator{T}"/> instance, or <see langword="null"/> if not possible.</returns>
+        [CanBeNull]
         protected abstract IndexRangeEnumerator<T> NewPartition(int ALower, int AUpper);
 
         #region EnumeratorBase<T> overrides
@@ -54,15 +51,15 @@ namespace Whetstone.Collections.Enumerators
         {
             AValue = default(T);
 
-            switch (FDirection)
+            switch (Direction)
             {
                 case EnumeratorDirection.Forward:
-                    if (++FIndex > FUpper)
+                    if (++FIndex > Upper)
                         return false;
                     break;
 
                 case EnumeratorDirection.Backward:
-                    if (--FIndex < FLower)
+                    if (--FIndex < Lower)
                         return false;
                     break;
             }
@@ -73,28 +70,28 @@ namespace Whetstone.Collections.Enumerators
         /// <inheritdoc />
         protected override void DoReset()
         {
-            switch (FDirection)
+            switch (Direction)
             {
                 case EnumeratorDirection.Forward:
-                    FIndex = FLower - 1;
+                    FIndex = Lower - 1;
                     break;
 
                 case EnumeratorDirection.Backward:
-                    FIndex = FUpper + 1;
+                    FIndex = Upper + 1;
                     break;
 
                 default:
                     throw new NotImplementedException();
             }
 
-            if (FIndex > FUpper || FIndex < FLower)
+            if (FIndex > Upper || FIndex < Lower)
                 IsExhausted = true;
         }
         #endregion
 
         #region IDirected
         /// <inheritdoc />
-        public EnumeratorDirection Direction => FDirection;
+        public EnumeratorDirection Direction { get; private set; }
         #endregion
 
         #region IReversable
@@ -103,7 +100,7 @@ namespace Whetstone.Collections.Enumerators
         {
             Bind();
 
-            FDirection = FDirection == EnumeratorDirection.Forward
+            Direction = Direction == EnumeratorDirection.Forward
                 ? EnumeratorDirection.Backward
                 : EnumeratorDirection.Forward;
 
@@ -119,9 +116,9 @@ namespace Whetstone.Collections.Enumerators
             {
                 Bind();
 
-                return Math.Max(0, FDirection == EnumeratorDirection.Forward
-                    ? FUpper - FIndex
-                    : FIndex - FLower);
+                return Math.Max(0, Direction == EnumeratorDirection.Forward
+                    ? Upper - FIndex
+                    : FIndex - Lower);
             }
         }
 
@@ -142,7 +139,7 @@ namespace Whetstone.Collections.Enumerators
         {
             Bind();
 
-            if (AIndex < FLower || AIndex > FUpper)
+            if (AIndex < Lower || AIndex > Upper)
                 throw new ArgumentOutOfRangeException(nameof(AIndex));
 
             FIndex = AIndex;
@@ -159,32 +156,32 @@ namespace Whetstone.Collections.Enumerators
 
             Bind();
 
-            int remain, split, temp;
+            int remain, split;
             IndexRangeEnumerator<T> part;
-            switch (FDirection)
+            switch (Direction)
             {
                 case EnumeratorDirection.Forward:
-                    remain = FUpper - FIndex;
+                    remain = Upper - FIndex;
                     if (remain < 2) return null;
                     split = FIndex + remain / 2;
 
-                    temp = FUpper;
-                    FUpper = split;
+                    part = NewPartition(split + 1, Upper);
+                    if (part == null) return null;
+                    Upper = split;
 
-                    part = NewPartition(FUpper + 1, temp);
                     part.Bind();
                     OnRangeChanged();
                     return part;
 
                 case EnumeratorDirection.Backward:
-                    remain = FIndex - FLower;
+                    remain = FIndex - Lower;
                     if (remain < 2) return null;
                     split = FIndex - remain / 2;
 
-                    temp = FLower;
-                    FLower = split;
-
-                    part = NewPartition(temp, FLower - 1);
+                    part = NewPartition(Lower, split - 1);
+                    if (part == null) return null;
+                    Lower = split;
+                    
                     part.Bind();
                     OnRangeChanged();
                     return part;
@@ -198,10 +195,10 @@ namespace Whetstone.Collections.Enumerators
         /// <summary>
         /// Get the lower bound of this enumerator.
         /// </summary>
-        public int Lower => FLower;
+        public int Lower { get; private set; }
         /// <summary>
         /// Get the upper bound of this enumerator.
         /// </summary>
-        public int Upper => FUpper;
+        public int Upper { get; private set; }
     }
 }

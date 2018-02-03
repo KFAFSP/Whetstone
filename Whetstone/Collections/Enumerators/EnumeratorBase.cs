@@ -28,16 +28,10 @@ namespace Whetstone.Collections.Enumerators
         /// <summary>
         /// Bind this enumerator to the data source.
         /// </summary>
-        /// <remarks>
-        /// Is only called once, at the latest possible binding point.
-        /// </remarks>
         protected abstract void DoBind();
         /// <summary>
         /// Unbind this enumerator from the data source.
         /// </summary>
-        /// <remarks>
-        /// Is only called once, at the earliest possible unbinding point.
-        /// </remarks>
         protected abstract void DoUnbind();
 
         /// <summary>
@@ -56,10 +50,8 @@ namespace Whetstone.Collections.Enumerators
         /// </summary>
         protected void Bind()
         {
-            if (IsDisposed)
-                throw new InvalidOperationException("Enumerator is disposed.");
-            if (IsBound)
-                return;
+            if (IsBound) return;
+            if (IsDisposed) throw new InvalidOperationException("Enumerator is disposed.");
 
             DoBind();
             FState = EnumeratorState.Ready;
@@ -69,10 +61,8 @@ namespace Whetstone.Collections.Enumerators
         /// <inheritdoc />
         public void Dispose()
         {
-            if (IsDisposed)
-                throw new InvalidOperationException("Enumerator is already disposed.");
-            if (IsBound)
-                DoUnbind();
+            if (IsDisposed) throw new InvalidOperationException("Enumerator is already disposed.");
+            if (IsBound) DoUnbind();
 
             FState = EnumeratorState.Disposed;
         }
