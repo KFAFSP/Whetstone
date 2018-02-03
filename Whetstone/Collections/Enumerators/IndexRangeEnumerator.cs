@@ -129,23 +129,25 @@ namespace Whetstone.Collections.Enumerators
         #region IIndexed<int>
         SCG.IComparer<int> IIndexed<int>.IndexComparer => SCG.Comparer<int>.Default;
 
-        /// <inheritdoc />
-        public int Index => IsReady ? FIndex : throw new InvalidOperationException("Enumerator is out of bounds.");
         #endregion
 
         #region IRandomAccess<int>
-        /// <inheritdoc />
-        public void MoveTo(int AIndex)
+        /// <inheritdoc cref="IRandomAccess{TIndex}.Index"/>
+        public int Index
         {
-            Bind();
+            get => IsReady ? FIndex : throw new InvalidOperationException("Enumerator is out of bounds.");
+            set
+            {
+                Bind();
 
-            if (AIndex < Lower || AIndex > Upper)
-                throw new ArgumentOutOfRangeException(nameof(AIndex));
+                if (value < Lower || value > Upper)
+                    throw new ArgumentOutOfRangeException(nameof(value));
 
-            FIndex = AIndex;
-            IsExhausted = false;
-            Current = Fetch(FIndex);
-        }
+                FIndex = value;
+                IsExhausted = false;
+                Current = Fetch(FIndex);
+            }
+        } 
         #endregion
 
         #region IPartitionable

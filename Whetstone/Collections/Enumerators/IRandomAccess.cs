@@ -12,15 +12,16 @@ namespace Whetstone.Collections.Enumerators
     public interface IRandomAccess<TIndex> : IIndexed<TIndex>
     {
         /// <summary>
-        /// Move the <see cref="IRandomAccess{TIndex}"/> enumerator to the specified index.
+        /// Get or set the index the <see cref="IRandomAccess{TIndex}"/> enumerator is located at.
         /// </summary>
         /// <remarks>
-        /// Calling this method will cause the enumerator to bind.
+        /// Setting this property will cause the enumerator to bind.
         /// </remarks>
-        /// <param name="AIndex">The index to jump to, may not be <see langword="null"/>.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="AIndex"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="AIndex"/> is outside the enumerator's bounds.</exception>
+        /// <param name="value">The index to jump to, may not be <see langword="null"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="value"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is outside the enumerator's bounds.</exception>
         /// <exception cref="InvalidOperationException">The enumerator is disposed.</exception>
-        void MoveTo([NotNull] TIndex AIndex);
+        [NotNull]
+        new TIndex Index { [Pure] get; set; }
     }
 }
