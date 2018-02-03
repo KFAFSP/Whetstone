@@ -31,7 +31,7 @@ namespace Whetstone.Collections
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
     [PublicAPI]
-    public interface IMutableSet<T> : ISet<T>, IMutableCollection<T>
+    public interface IMutableSet<T> : ISet<T>, IMutableSet, IMutableCollection<T>
     {
         /// <summary>
         /// Try to add an item to the set.
