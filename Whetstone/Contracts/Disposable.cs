@@ -111,6 +111,8 @@ namespace Whetstone.Contracts
         /// Throw an <see cref="ObjectDisposedException"/> if this instance is disposed.
         /// </summary>
         /// <exception cref="ObjectDisposedException">This instance is disposed.</exception>
+        [DebuggerHidden]
+        [ExcludeFromCodeCoverage]
         protected void ThrowIfDisposed()
         {
             if (IsDisposed)
@@ -125,6 +127,7 @@ namespace Whetstone.Contracts
         /// This method is conditionally available only in DEBUG builds.
         /// </remarks>
         [Conditional("DEBUG")]
+        [DebuggerHidden]
         [ExcludeFromCodeCoverage]
         public void AssertNotDisposed()
         {

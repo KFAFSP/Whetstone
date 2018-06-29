@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
+using JetBrains.Annotations;
+
 using NUnit.Framework;
 
 // ReSharper disable AssignNullToNotNullAttribute
@@ -309,6 +311,7 @@ namespace Whetstone.Contracts
             return ALeft == ARight && !(ALeft != ARight);
         }
 
+        [UsedImplicitly]
         public static IEnumerable OptOptEqualsTestCases
         {
             get
@@ -319,6 +322,7 @@ namespace Whetstone.Contracts
             }
         }
 
+        [UsedImplicitly]
         public static IEnumerable OptIntEqualsTestCases
         {
             get
@@ -329,6 +333,7 @@ namespace Whetstone.Contracts
             }
         }
 
+        [UsedImplicitly]
         public static IEnumerable OptOptInequalTestCase
         {
             get

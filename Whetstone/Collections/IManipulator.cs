@@ -20,7 +20,8 @@ namespace Whetstone.Collections
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Access of this property is invalid before the start and after the end of the enumeration.
+        /// Access of this property is invalid before the start and after the end of the
+        /// enumeration.
         /// </para>
         /// </remarks>
         /// <exception cref="InvalidOperationException">The enumerator is out of bounds.</exception>
