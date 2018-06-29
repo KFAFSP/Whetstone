@@ -12,7 +12,8 @@ namespace Whetstone.Collections
     /// Represents a <see cref="ICollection"/> of values associated to unique keys.
     /// </summary>
     [PublicAPI]
-    public interface IMap : ICollection<IKeyValuePair>
+    public interface IMap :
+        ICollection<IKeyValuePair>
     {
         /// <summary>
         /// Try to get the value for the specified key.
@@ -25,8 +26,12 @@ namespace Whetstone.Collections
         /// <remarks>
         /// The key equality is defined by the <see cref="Keys"/> set equality comparer.
         /// </remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="AKey"/> is of an invalid type.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="AKey"/> is of an invalid type.
+        /// </exception>
         [Pure]
         Optional<object> Get([NotNull] object AKey);
 
@@ -46,18 +51,25 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AKey">The key to lookup.</param>
         /// <returns>The value associated to <paramref name="AKey"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
-        /// <exception cref="KeyNotFoundException"><paramref name="AKey"/> is not part of the lookup.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="KeyNotFoundException">
+        /// <paramref name="AKey"/> is not part of the lookup.
+        /// </exception>
         object this[[NotNull] object AKey] { [Pure] get; }
     }
 
     /// <summary>
-    /// Represents a strongly typed <see cref="ICollection{T}"/> if values associated to unique keys.
+    /// Represents a strongly typed <see cref="ICollection{T}"/> if values associated to unique
+    /// keys.
     /// </summary>
     /// <typeparam name="K">The key type.</typeparam>
     /// <typeparam name="V">The value type.</typeparam>
     [PublicAPI]
-    public interface IMap<K, V> : IMap, ICollection<IKeyValuePair<K, V>>
+    public interface IMap<K, V> :
+        IMap,
+        ICollection<IKeyValuePair<K, V>>
     {
         /// <summary>
         /// Try to get the value for the specified key.
@@ -70,7 +82,9 @@ namespace Whetstone.Collections
         /// <remarks>
         /// The key equality is defined by the <see cref="Keys"/> set equality comparer.
         /// </remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
         [Pure]
         Optional<V> Get([NotNull] K AKey);
 
@@ -94,8 +108,12 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AKey">The key to lookup.</param>
         /// <returns>The value associated to <paramref name="AKey"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
-        /// <exception cref="KeyNotFoundException"><paramref name="AKey"/> is not part of the lookup.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="KeyNotFoundException">
+        /// <paramref name="AKey"/> is not part of the lookup.
+        /// </exception>
         V this[[NotNull] K AKey] { [Pure] get; }
     }
 }

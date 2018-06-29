@@ -10,7 +10,8 @@ namespace Whetstone.Collections
     /// Represents a <see cref="ICollection"/> with contiguous indices starting at 0.
     /// </summary>
     [PublicAPI]
-    public interface IList : ICollection
+    public interface IList :
+        ICollection
     {
         /// <summary>
         /// Get the index of the specified item.
@@ -41,16 +42,21 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AIndex">The index to get.</param>
         /// <returns>The item at <paramref name="AIndex"/>.</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="AIndex"/> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="AIndex"/> is out of range.
+        /// </exception>
         object this[int AIndex] { [Pure] get; }
     }
 
     /// <summary>
-    /// Represents a strongly typed <see cref="ICollection{T}"/> with contiguous indices starting at 0.
+    /// Represents a strongly typed <see cref="ICollection{T}"/> with contiguous indices starting
+    /// at 0.
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
     [PublicAPI]
-    public interface IList<T> : IList, ICollection<T>
+    public interface IList<T> :
+        IList,
+        ICollection<T>
     {
         /// <summary>
         /// Get the index of the specified item.
@@ -81,7 +87,9 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AIndex">The index to get.</param>
         /// <returns>The item at <paramref name="AIndex"/>.</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="AIndex"/> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="AIndex"/> is out of range.
+        /// </exception>
         new T this[int AIndex] { [Pure] get; }
     }
 }

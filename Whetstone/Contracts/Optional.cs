@@ -42,9 +42,9 @@ namespace Whetstone.Contracts
         IEquatable<Optional<T>>,
         SCG.IEnumerable<T>
     {
-        private const string C_NotPresent = "Optional value is not present.";
+        const string C_NotPresent = "Optional value is not present.";
 
-        private readonly T[] FValue;
+        readonly T[] FValue;
 
         /// <summary>
         /// Initialize an <see cref="Optional{T}"/> with a present value.
@@ -89,7 +89,7 @@ namespace Whetstone.Contracts
 
             if (IsPresent) AAction(FValue[0]);
         }
-        
+
         /// <summary>
         /// Compute a <see cref="Func{T, TOut}"/> on the value if it is present and wrap the result; otherwise propagate absence.
         /// </summary>
@@ -133,7 +133,7 @@ namespace Whetstone.Contracts
                 ? new Optional<TOut>(FValue[0] as TOut)
                 : new Optional<TOut>();
         }
-        
+
         /// <summary>
         /// Performs an <see langword="as"/> cast of the value if present and the result will be non-<see langword="null"/>; otherwise propagates absence.
         /// </summary>
@@ -173,7 +173,7 @@ namespace Whetstone.Contracts
         /// Check whether the value is present and equal to the specified one, using default equality comparison.
         /// </summary>
         /// <param name="AValue">The value to compare with.</param>
-        /// <returns><c>true</c> if <see cref="IsPresent"/> is <c>true</c> and <see cref="Value"/> equals <paramref name="AValue"/>; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if <see cref="IsPresent"/> is <see langword="true"/> and <see cref="Value"/> equals <paramref name="AValue"/>; otherwise <see langword="false"/>.</returns>
         [Pure]
         public bool Equals([NoEnumeration] T AValue)
         {
@@ -186,7 +186,7 @@ namespace Whetstone.Contracts
         /// Check whether two <see cref="Optional{T}"/> are the equal by comparing their values if present.
         /// </summary>
         /// <param name="AOptional">The <see cref="Optional{T}"/> to compare with.</param>
-        /// <returns><c>true</c> if either both optionals are absent or contain the same value; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if either both optionals are absent or contain the same value; otherwise <see langword="false"/>.</returns>
         [Pure]
         public bool Equals(Optional<T> AOptional)
         {
@@ -201,12 +201,12 @@ namespace Whetstone.Contracts
         /// Check whether this <see cref="Optional{T}"/> is equal to the specified <see see="object"/>.
         /// </summary>
         /// <param name="AObject">The <see cref="object"/> to compare with.</param>
-        /// <returns><c>true</c> if any of the previously defined equality relations applied; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if any of the previously defined equality relations applied; otherwise <see langword="false"/>.</returns>
         /// <remarks>
-        /// Specifically, this method returns <c>true</c> only if either:
+        /// Specifically, this method returns <see langword="true"/> only if either:
         /// <list type="bullet">
-        /// <li><paramref name="AObject"/> is another <see cref="Optional{T}"/> and <see cref="Optional{T}.Equals(Optional{T})"/> returns <c>true</c>.</li>
-        /// <li><paramref name="AObject"/> is a value of type <typeparamref name="T"/> and <see cref="Optional{T}.Equals(T)"/> returns <c>true</c>.</li>
+        /// <li><paramref name="AObject"/> is another <see cref="Optional{T}"/> and <see cref="Optional{T}.Equals(Optional{T})"/> returns <see langword="true"/>.</li>
+        /// <li><paramref name="AObject"/> is a value of type <typeparamref name="T"/> and <see cref="Optional{T}.Equals(T)"/> returns <see langword="true"/>.</li>
         /// </list>
         /// </remarks>
         [Pure]
@@ -256,7 +256,7 @@ namespace Whetstone.Contracts
         /// <summary>
         /// Gets the value if present; otherwise throws an <see cref="InvalidOperationException"/>.
         /// </summary>
-        /// <exception cref="InvalidOperationException"><see cref="IsPresent"/> is <c>false</c>.</exception>
+        /// <exception cref="InvalidOperationException"><see cref="IsPresent"/> is <see langword="false"/>.</exception>
         public T Value => IsPresent ? FValue[0] : throw new InvalidOperationException(C_NotPresent);
 
         /// <summary>
@@ -295,14 +295,14 @@ namespace Whetstone.Contracts
         /// </summary>
         /// <param name="ALeft">The left <see cref="Optional{T}"/>.</param>
         /// <param name="ARight">The right <see cref="Optional{T}"/>.</param>
-        /// <returns><c>true</c> if the two <see cref="Optional{T}"/>s are equal; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the two <see cref="Optional{T}"/>s are equal; otherwise <see langword="false"/>.</returns>
         public static bool operator ==(Optional<T> ALeft, Optional<T> ARight) => ALeft.Equals(ARight);
         /// <summary>
         /// Shorthand for calling <see cref="Optional{T}.Equals(Optional{T})"/> and inverting.
         /// </summary>
         /// <param name="ALeft">The left <see cref="Optional{T}"/>.</param>
         /// <param name="ARight">The right <see cref="Optional{T}"/>.</param>
-        /// <returns><c>true</c> if the two <see cref="Optional{T}"/>s are inequal; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the two <see cref="Optional{T}"/>s are inequal; otherwise <see langword="false"/>.</returns>
         public static bool operator !=(Optional<T> ALeft, Optional<T> ARight) => !ALeft.Equals(ARight);
 
         /// <summary>
@@ -310,14 +310,14 @@ namespace Whetstone.Contracts
         /// </summary>
         /// <param name="ALeft">The <see cref="Optional{T}"/>.</param>
         /// <param name="ARight">The value.</param>
-        /// <returns><c>true</c> if the <see cref="Optional{T}"/> and the value are equal; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the <see cref="Optional{T}"/> and the value are equal; otherwise <see langword="false"/>.</returns>
         public static bool operator ==(Optional<T> ALeft, T ARight) => ALeft.Equals(ARight);
         /// <summary>
         /// Shorthand for calling <see cref="Optional{T}.Equals(T)"/>.
         /// </summary>
         /// <param name="ALeft">The <see cref="Optional{T}"/>.</param>
         /// <param name="ARight">The value.</param>
-        /// <returns><c>true</c> if the <see cref="Optional{T}"/> and the value are inequal; otherwise <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if the <see cref="Optional{T}"/> and the value are inequal; otherwise <see langword="false"/>.</returns>
         public static bool operator !=(Optional<T> ALeft, T ARight) => !ALeft.Equals(ARight);
     }
 

@@ -17,7 +17,7 @@ namespace Whetstone.Collections.Enumerators
         IRandomAccess<int>,
         IPartitionable
     {
-        private int FIndex;
+        int FIndex;
 
         /// <summary>
         /// Fetch the data at the specified index.
@@ -35,7 +35,10 @@ namespace Whetstone.Collections.Enumerators
         /// </summary>
         /// <param name="ALower">The lower bound.</param>
         /// <param name="AUpper">The upper bound.</param>
-        /// <returns>A new <see cref="IndexRangeEnumerator{T}"/> instance, or <see langword="null"/> if not possible.</returns>
+        /// <returns>
+        /// A new <see cref="IndexRangeEnumerator{T}"/> instance, or <see langword="null"/> if not
+        /// possible.
+        /// </returns>
         [CanBeNull]
         protected abstract IndexRangeEnumerator<T> NewPartition(int ALower, int AUpper);
 
@@ -135,7 +138,9 @@ namespace Whetstone.Collections.Enumerators
         /// <inheritdoc cref="IRandomAccess{TIndex}.Index"/>
         public int Index
         {
-            get => IsReady ? FIndex : throw new InvalidOperationException("Enumerator is out of bounds.");
+            get => IsReady
+                ? FIndex
+                : throw new InvalidOperationException("Enumerator is out of bounds.");
             set
             {
                 Bind();
@@ -147,7 +152,7 @@ namespace Whetstone.Collections.Enumerators
                 IsExhausted = false;
                 Current = Fetch(FIndex);
             }
-        } 
+        }
         #endregion
 
         #region IPartitionable
@@ -183,7 +188,7 @@ namespace Whetstone.Collections.Enumerators
                     part = NewPartition(Lower, split - 1);
                     if (part == null) return null;
                     Lower = split;
-                    
+
                     part.Bind();
                     OnRangeChanged();
                     return part;

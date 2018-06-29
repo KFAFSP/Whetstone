@@ -10,23 +10,25 @@ namespace Whetstone.Collections
     /// <typeparam name="K">The key type.</typeparam>
     /// <typeparam name="V">The value type.</typeparam>
     [PublicAPI]
-    public struct KeyValuePair<K, V> : IKeyValuePair<K, V>
+    public struct KeyValuePair<K, V> :
+        IKeyValuePair<K, V>
     {
-        private readonly K FKey;
-        private readonly V FValue;
+        readonly K FKey;
 
         /// <summary>
         /// Initialize a new <see cref="KeyValuePair{K,V}"/> struct.
         /// </summary>
         /// <param name="AKey">The key.</param>
         /// <param name="AValue">The value.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
         public KeyValuePair([NotNull] K AKey, V AValue)
         {
             if (AKey == null) throw new ArgumentNullException(nameof(AKey));
 
             FKey = AKey;
-            FValue = AValue;
+            Value = AValue;
         }
 
         #region IKeyValuePair
@@ -47,7 +49,7 @@ namespace Whetstone.Collections
             }
         }
         /// <inheritdoc />
-        public V Value => FValue;
+        public V Value { get; }
         #endregion
     }
 }

@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Collections\DelegateComparer.cs" />
     <Compile Include="Collections\DelegateEqualityComparer.cs" />
+    <Compile Include="Collections\Enumerators\BindsEnumeratorAttribute.cs" />
     <Compile Include="Collections\Enumerators\EnumeratorBase.cs" />
     <Compile Include="Collections\Enumerators\EnumeratorState.cs" />
     <Compile Include="Collections\Enumerators\IDirected.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Collections\KeyValuePair.cs" />
     <Compile Include="Collections\Manipulators\IStructural.cs" />
     <Compile Include="Collections\ReferenceEqualityComparer.cs" />
+    <Compile Include="Contracts\Disposable.cs" />
     <Compile Include="Contracts\Optional.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -8,10 +8,12 @@ using SCG = System.Collections.Generic;
 namespace Whetstone.Collections
 {
     /// <summary>
-    /// Represents an <see cref="SC.IEnumerator"/> that is capable of manipulating the underlying sequence.
+    /// Represents an <see cref="SC.IEnumerator"/> that is capable of manipulating the underlying
+    /// sequence.
     /// </summary>
     [PublicAPI]
-    public interface IManipulator : SC.IEnumerator
+    public interface IManipulator :
+        SC.IEnumerator
     {
         /// <summary>
         /// Get or set the value the <see cref="IManipulator"/> is currently at.
@@ -26,18 +28,22 @@ namespace Whetstone.Collections
     }
 
     /// <summary>
-    /// Represents an <see cref="SCG.IEnumerator{T}"/> that is capable of manipulating the underlying sequence.
+    /// Represents an <see cref="SCG.IEnumerator{T}"/> that is capable of manipulating the
+    /// underlying sequence.
     /// </summary>
     /// <typeparam name="T">The enumerated item type.</typeparam>
     [PublicAPI]
-    public interface IManipulator<T> : IManipulator, SCG.IEnumerator<T>
+    public interface IManipulator<T> :
+        IManipulator,
+        SCG.IEnumerator<T>
     {
         /// <summary>
         /// Get or set the value the <see cref="IManipulator{T}"/> is currently at.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Access of this property is invalid before the start and after the end of the enumeration.
+        /// Access of this property is invalid before the start and after the end of the
+        /// enumeration.
         /// </para>
         /// </remarks>
         /// <exception cref="InvalidOperationException">The enumerator is out of bounds.</exception>

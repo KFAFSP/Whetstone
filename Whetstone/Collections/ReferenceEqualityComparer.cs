@@ -8,11 +8,13 @@ using JetBrains.Annotations;
 namespace Whetstone.Collections
 {
     /// <summary>
-    /// An <see cref="SCG.IEqualityComparer{T}"/> that uses the <see cref="object.ReferenceEquals(object, object)"/>
-    /// equality comparison.
+    /// An <see cref="SCG.IEqualityComparer{T}"/> that uses the
+    /// <see cref="object.ReferenceEquals(object, object)"/> equality comparison.
     /// </summary>
     [PublicAPI]
-    public sealed class ReferenceEqualityComparer : SCG.IEqualityComparer<object>, SC.IEqualityComparer
+    public sealed class ReferenceEqualityComparer :
+        SCG.IEqualityComparer<object>,
+        SC.IEqualityComparer
     {
         /// <summary>
         /// Singleton instance of the <see cref="ReferenceEqualityComparer"/>.

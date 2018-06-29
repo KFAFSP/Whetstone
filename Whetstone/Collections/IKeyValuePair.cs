@@ -25,7 +25,8 @@ namespace Whetstone.Collections
     /// <typeparam name="K">The key type.</typeparam>
     /// <typeparam name="V">The value type.</typeparam>
     [PublicAPI]
-    public interface IKeyValuePair<out K, out V> : IKeyValuePair
+    public interface IKeyValuePair<out K, out V> :
+        IKeyValuePair
     {
         /// <summary>
         /// Get the key.

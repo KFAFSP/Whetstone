@@ -12,7 +12,9 @@ namespace Whetstone.Collections
     /// Represents a mutable <see cref="IMap"/>.
     /// </summary>
     [PublicAPI]
-    public interface IMutableMap : IMap, IMutableCollection<IKeyValuePair>
+    public interface IMutableMap :
+        IMap,
+        IMutableCollection<IKeyValuePair>
     {
         /// <summary>
         /// Set the value associated with the specified key.
@@ -20,11 +22,16 @@ namespace Whetstone.Collections
         /// <param name="AKey">The key to set.</param>
         /// <param name="AValue">The value to put.</param>
         /// <returns>
-        /// An absent <see cref="Optional{T}"/> if there was no previous value for <paramref name="AKey"/>,
-        /// or a present <see cref="Optional{T}"/> with the overwritten value.
+        /// An absent <see cref="Optional{T}"/> if there was no previous value for
+        /// <paramref name="AKey"/>, or a present <see cref="Optional{T}"/> with the overwritten
+        /// value.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="AKey"/> is of an invalid type.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="AKey"/> is of an invalid type.
+        /// </exception>
         Optional<object> Put([NotNull] object AKey, object AValue);
 
         /// <summary>
@@ -35,8 +42,12 @@ namespace Whetstone.Collections
         /// An absent <see cref="Optional{T}"/> if <paramref name="AKey"/> was not found,
         /// or a present <see cref="Optional{T}"/> with the dropped value.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentException"><paramref name="AKey"/> is of an invalid type.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="AKey"/> is of an invalid type.
+        /// </exception>
         Optional<object> Drop([NotNull] object AKey);
 
         /// <summary>
@@ -50,7 +61,9 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AKey">The key to lookup.</param>
         /// <returns>The value associated to <paramref name="AKey"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
         new object this[[NotNull] object AKey] { [Pure] get; set; }
     }
 
@@ -60,7 +73,10 @@ namespace Whetstone.Collections
     /// <typeparam name="K">The key type.</typeparam>
     /// <typeparam name="V">The value type.</typeparam>
     [PublicAPI]
-    public interface IMutableMap<K, V> : IMap<K, V>, IMutableMap, IMutableCollection<IKeyValuePair<K, V>>
+    public interface IMutableMap<K, V> :
+        IMap<K, V>,
+        IMutableMap,
+        IMutableCollection<IKeyValuePair<K, V>>
     {
         /// <summary>
         /// Set the value associated with the specified key.
@@ -68,10 +84,13 @@ namespace Whetstone.Collections
         /// <param name="AKey">The key to set.</param>
         /// <param name="AValue">The value to put.</param>
         /// <returns>
-        /// An absent <see cref="Optional{T}"/> if there was no previous value for <paramref name="AKey"/>,
-        /// or a present <see cref="Optional{T}"/> with the overwritten value.
+        /// An absent <see cref="Optional{T}"/> if there was no previous value for
+        /// <paramref name="AKey"/>, or a present <see cref="Optional{T}"/> with the overwritten
+        /// value.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
         Optional<V> Put([NotNull] K AKey, V AValue);
 
         /// <summary>
@@ -82,7 +101,9 @@ namespace Whetstone.Collections
         /// An absent <see cref="Optional{T}"/> if <paramref name="AKey"/> was not found,
         /// or a present <see cref="Optional{T}"/> with the dropped value.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
         Optional<V> Drop([NotNull] K AKey);
 
         /// <summary>
@@ -100,7 +121,9 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AKey">The key to lookup.</param>
         /// <returns>The value associated to <paramref name="AKey"/>.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="AKey"/> is <see langword="null"/>.</exception>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AKey"/> is <see langword="null"/>.
+        /// </exception>
         new V this[[NotNull] K AKey] { [Pure] get; set; }
     }
 }

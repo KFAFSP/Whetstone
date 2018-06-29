@@ -9,7 +9,8 @@ namespace Whetstone.Collections
     /// Represents a mutable <see cref="SC.IEnumerable"/>.
     /// </summary>
     [PublicAPI]
-    public interface IManipulatable : SC.IEnumerable
+    public interface IManipulatable :
+        SC.IEnumerable
     {
         /// <summary>
         /// Get a maniuplator for this <see cref="IManipulatable"/>.
@@ -25,7 +26,9 @@ namespace Whetstone.Collections
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
     [PublicAPI]
-    public interface IManipulatable<T> : SCG.IEnumerable<T>, IManipulatable
+    public interface IManipulatable<T> :
+        SCG.IEnumerable<T>,
+        IManipulatable
     {
         /// <summary>
         /// Get a maniuplator for this <see cref="IManipulatable{T}"/>.

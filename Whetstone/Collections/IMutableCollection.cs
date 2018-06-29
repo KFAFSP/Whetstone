@@ -8,19 +8,25 @@ namespace Whetstone.Collections
     /// Represents a mutable <see cref="ICollection"/> of items.
     /// </summary>
     [PublicAPI]
-    public interface IMutableCollection : ICollection
+    public interface IMutableCollection :
+        ICollection
     {
         /// <summary>
         /// Add an item to the collection.
         /// </summary>
         /// <param name="AItem">The item to add.</param>
-        /// <exception cref="ArgumentException"><paramref name="AItem"/> is of an invalid type.</exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="AItem"/> is of an invalid type.
+        /// </exception>
         void Add(object AItem);
         /// <summary>
         /// Remove an item from the collection.
         /// </summary>
         /// <param name="AItem">The item to remove.</param>
-        /// <returns><c>true</c> if the item was removed; <c>false</c> if it was not found.</returns>
+        /// <returns>
+        /// <see langword="true"/> if the item was removed; <see langword="false"/> if it was not
+        /// found.
+        /// </returns>
         /// <remarks>
         /// Equality is determined using the <see cref="EqualsEqualityComparer"/>.
         /// If there are multiple occurrences of <paramref name="AItem"/>, only one is removed.
@@ -38,7 +44,9 @@ namespace Whetstone.Collections
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
     [PublicAPI]
-    public interface IMutableCollection<T> : IMutableCollection, ICollection<T>
+    public interface IMutableCollection<T> :
+        IMutableCollection,
+        ICollection<T>
     {
         /// <summary>
         /// Add an item to the collection.
@@ -49,7 +57,10 @@ namespace Whetstone.Collections
         /// Remove an item from the collection.
         /// </summary>
         /// <param name="AItem">The item to remove.</param>
-        /// <returns><c>true</c> if the item was removed; <c>false</c> if it was not found.</returns>
+        /// <returns>
+        /// <see langword="true"/> if the item was removed; <see langword="false"/> if it was not
+        /// found.
+        /// </returns>
         /// <remarks>
         /// Equality is determined using the <see cref="EqualsEqualityComparer"/>.
         /// If there are multiple occurrences of <paramref name="AItem"/>, only one is removed.

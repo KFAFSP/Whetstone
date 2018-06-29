@@ -12,21 +12,24 @@ namespace Whetstone.Collections
     /// </summary>
     /// <typeparam name="T">The compared type.</typeparam>
     [PublicAPI]
-    public sealed class DelegateEqualityComparer<T> : SCG.IEqualityComparer<T>, SC.IEqualityComparer
+    public sealed class DelegateEqualityComparer<T> :
+        SCG.IEqualityComparer<T>,
+        SC.IEqualityComparer
     {
-        private static readonly Func<T, int> _FNullHasher = X => 0;
+        static readonly Func<T, int> _FNullHasher = X => 0;
 
-        [NotNull]
-        private readonly Func<T, T, bool> FEquals;
-        [NotNull]
-        private readonly Func<T, int> FHash;
+        [NotNull] readonly Func<T, T, bool> FEquals;
+        [NotNull] readonly Func<T, int> FHash;
 
         /// <summary>
         /// Create a new <see cref="DelegateEqualityComparer{T}"/> instance.
         /// </summary>
         /// <param name="AEquals">The equals delegate.</param>
         /// <param name="AHash">The hashing delegate.</param>
-        public DelegateEqualityComparer([NotNull] Func<T, T, bool> AEquals, Func<T, int> AHash = null)
+        public DelegateEqualityComparer(
+            [NotNull] Func<T, T, bool> AEquals,
+            [CanBeNull] Func<T, int> AHash = null
+        )
         {
             FEquals = AEquals ?? throw new ArgumentNullException(nameof(AEquals));
             FHash = AHash ?? _FNullHasher;
@@ -55,9 +58,9 @@ namespace Whetstone.Collections
             return Equals((T)AX, (T)AY);
         }
 
-        int SC.IEqualityComparer.GetHashCode(object AObject)
+        int SC.IEqualityComparer.GetHashCode([NotNull] object AObject)
         {
-            if (!(AObject is T))
+            if (AObject != null && !(AObject is T))
                 throw new ArgumentException("Unhashable type.");
 
             return GetHashCode((T)AObject);

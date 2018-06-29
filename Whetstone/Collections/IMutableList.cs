@@ -10,7 +10,9 @@ namespace Whetstone.Collections
     /// Represents a mutable <see cref="IList"/>.
     /// </summary>
     [PublicAPI]
-    public interface IMutableList : IList, IMutableCollection
+    public interface IMutableList :
+        IList,
+        IMutableCollection
     {
         /// <summary>
         /// Add an item to the list.
@@ -22,7 +24,9 @@ namespace Whetstone.Collections
         /// If an explicit append is desired, <see cref="InsertAt"/> should be used.
         /// This operation should be the fasted possible add for the given list implementation.
         /// </remarks>
-        /// <exception cref="ArgumentException"><paramref name="AItem"/> is of an invalid type.</exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="AItem"/> is of an invalid type.
+        /// </exception>
         new int Add(object AItem);
 
         /// <summary>
@@ -30,11 +34,15 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AIndex">The index at which to insert.</param>
         /// <param name="AItem">The item to insert.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="AIndex"/> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="AIndex"/> is out of range.
+        /// </exception>
         /// <remarks>
         /// <paramref name="AIndex"/> can be <see cref="ICollection.Size"/> to insert at the end.
         /// </remarks>
-        /// <exception cref="ArgumentException"><paramref name="AItem"/> is of an invalid type.</exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="AItem"/> is of an invalid type.
+        /// </exception>
         void InsertAt(int AIndex, object AItem);
 
         /// <summary>
@@ -52,8 +60,12 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AIndex">The index to get.</param>
         /// <returns>The item at <paramref name="AIndex"/>.</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="AIndex"/> is out of range.</exception>
-        /// <exception cref="ArgumentException"><paramref name="value"/> is of an invalid type.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="AIndex"/> is out of range.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="value"/> is of an invalid type.
+        /// </exception>
         new object this[int AIndex] { [Pure] get; set; }
     }
 
@@ -62,7 +74,10 @@ namespace Whetstone.Collections
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
     [PublicAPI]
-    public interface IMutableList<T> : IMutableList, IList<T>, IMutableCollection<T>
+    public interface IMutableList<T> :
+        IMutableList,
+        IList<T>,
+        IMutableCollection<T>
     {
         /// <summary>
         /// Add an item to the list.
@@ -81,7 +96,9 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AIndex">The index at which to insert.</param>
         /// <param name="AItem">The item to insert.</param>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="AIndex"/> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="AIndex"/> is out of range.
+        /// </exception>
         /// <remarks>
         /// <paramref name="AIndex"/> can be <see cref="ICollection.Size"/> to insert at the end.
         /// </remarks>
@@ -102,7 +119,9 @@ namespace Whetstone.Collections
         /// </summary>
         /// <param name="AIndex">The index to get.</param>
         /// <returns>The item at <paramref name="AIndex"/>.</returns>
-        /// <exception cref="ArgumentOutOfRangeException"><paramref name="AIndex"/> is out of range.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="AIndex"/> is out of range.
+        /// </exception>
         new T this[int AIndex] { [Pure] get; set; }
     }
 }

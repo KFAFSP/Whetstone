@@ -12,10 +12,11 @@ namespace Whetstone.Collections
     /// </summary>
     /// <typeparam name="T">The compared type.</typeparam>
     [PublicAPI]
-    public sealed class DelegateComparer<T> : SCG.IComparer<T>, SC.IComparer
+    public sealed class DelegateComparer<T> :
+        SCG.IComparer<T>,
+        SC.IComparer
     {
-        [NotNull]
-        private readonly Func<T, T, int> FCompare;
+        [NotNull] readonly Func<T, T, int> FCompare;
 
         /// <summary>
         /// Create a new <see cref="DelegateComparer{T}"/> instance.

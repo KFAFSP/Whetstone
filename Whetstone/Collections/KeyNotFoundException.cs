@@ -10,29 +10,19 @@ namespace Whetstone.Collections
     [PublicAPI]
     public class KeyNotFoundException : Exception
     {
-        private readonly object FKey;
-
         /// <summary>
         /// Initialize a new <see cref="KeyNotFoundException"/> instance.
         /// </summary>
         /// <param name="AKey">The missing key.</param>
-        public KeyNotFoundException(object AKey)
-            : this(AKey, "Key not found.")
-        { }
-        /// <summary>
-        /// Initialize a new <see cref="KeyNotFoundException"/> instance.
-        /// </summary>
-        /// <param name="AKey">The missing key.</param>
-        /// <param name="AMessage">The error message.</param>
-        public KeyNotFoundException(object AKey, string AMessage)
-            : base(AMessage)
+        public KeyNotFoundException([NotNull] object AKey)
+            : base("Key not found.")
         {
-            FKey = AKey;
+            Key = AKey;
         }
 
         /// <summary>
         /// Get the key.
         /// </summary>
-        public object Key => FKey;
+        public object Key { get; }
     }
 }

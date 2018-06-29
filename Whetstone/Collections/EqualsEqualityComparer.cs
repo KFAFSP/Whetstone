@@ -10,7 +10,9 @@ namespace Whetstone.Collections
     /// equality comparison. The hash is computed using the reference value.
     /// </summary>
     [PublicAPI]
-    public sealed class EqualsEqualityComparer : SCG.IEqualityComparer<object>, SC.IEqualityComparer
+    public sealed class EqualsEqualityComparer :
+        SCG.IEqualityComparer<object>,
+        SC.IEqualityComparer
     {
         /// <summary>
         /// Singleton instance of the <see cref="EqualsEqualityComparer"/>.

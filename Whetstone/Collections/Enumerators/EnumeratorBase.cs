@@ -2,6 +2,8 @@
 
 using JetBrains.Annotations;
 
+using Whetstone.Contracts;
+
 using SC = System.Collections;
 using SCG = System.Collections.Generic;
 
@@ -12,10 +14,11 @@ namespace Whetstone.Collections.Enumerators
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
     [PublicAPI]
-    public abstract class EnumeratorBase<T> : SCG.IEnumerator<T>
+    public abstract class EnumeratorBase<T> : Disposable,
+        SCG.IEnumerator<T>
     {
-        private EnumeratorState FState;
-        private T FCurrent;
+        EnumeratorState FState;
+        T FCurrent;
 
         /// <summary>
         /// Create a new <see cref="EnumeratorBase{T}"/> instance.
@@ -38,7 +41,9 @@ namespace Whetstone.Collections.Enumerators
         /// Try to get the next data from the data source.
         /// </summary>
         /// <param name="AValue">The output data.</param>
-        /// <returns><c>true</c> if successful; <c>false</c> if exhausted.</returns>
+        /// <returns>
+        /// <see langword="true"/> if successful; <see langword="false"/> if exhausted.
+        /// </returns>
         protected abstract bool DoMoveNext(out T AValue);
         /// <summary>
         /// Reset a bound enumerator.
@@ -46,12 +51,32 @@ namespace Whetstone.Collections.Enumerators
         protected abstract void DoReset();
 
         /// <summary>
+        /// Throw an <see cref="InvalidOperationException"/> if this <see cref="EnumeratorBase{T}"/>
+        /// is unbound.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Enumerator is not bound.</exception>
+        protected void ThrowIfUnbound()
+        {
+            if (!IsBound) throw new InvalidOperationException("Enumerator is not bound.");
+        }
+        /// <summary>
+        /// Throw an <see cref="InvalidOperationException"/> if this <see cref="EnumeratorBase{T}"/>
+        /// is not ready.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Enumerator is not ready.</exception>
+        protected void ThrowIfNotReady()
+        {
+            if (!IsReady) throw new InvalidOperationException("Enumerator is not ready.");
+        }
+
+        /// <summary>
         /// Ensure that the enumerator is bound.
         /// </summary>
+        [BindsEnumerator]
         protected void Bind()
         {
             if (IsBound) return;
-            if (IsDisposed) throw new InvalidOperationException("Enumerator is disposed.");
+            ThrowIfDisposed();
 
             DoBind();
             FState = EnumeratorState.Ready;
@@ -59,17 +84,18 @@ namespace Whetstone.Collections.Enumerators
 
         #region IDisposable
         /// <inheritdoc />
-        public void Dispose()
+        protected override void Dispose(bool ADisposing)
         {
-            if (IsDisposed) throw new InvalidOperationException("Enumerator is already disposed.");
-            if (IsBound) DoUnbind();
+            if (ADisposing && IsBound) DoUnbind();
 
             FState = EnumeratorState.Disposed;
+            base.Dispose(ADisposing);
         }
         #endregion
 
         #region IEnumerator
         /// <inheritdoc />
+        [BindsEnumerator]
         public bool MoveNext()
         {
             Bind();
@@ -87,8 +113,7 @@ namespace Whetstone.Collections.Enumerators
         /// <inheritdoc />
         public void Reset()
         {
-            if (!IsBound)
-                throw new InvalidOperationException("Enumerator is not bound.");
+            ThrowIfUnbound();
 
             DoReset();
         }
@@ -100,7 +125,11 @@ namespace Whetstone.Collections.Enumerators
         /// <inheritdoc />
         public T Current
         {
-            get => IsReady ? FCurrent : throw new InvalidOperationException("Enumerator is not bound.");
+            get
+            {
+                ThrowIfNotReady();
+                return FCurrent;
+            }
             protected set => FCurrent = value;
         }
         #endregion
@@ -108,7 +137,9 @@ namespace Whetstone.Collections.Enumerators
         /// <summary>
         /// Get a value indicating whether this enumerator is bound to the datasource.
         /// </summary>
-        public bool IsBound => FState == EnumeratorState.Ready || FState == EnumeratorState.Exhausted;
+        public bool IsBound =>
+            FState == EnumeratorState.Ready
+            || FState == EnumeratorState.Exhausted;
         /// <summary>
         /// Get a value indicating whether this enumerator is in enumeration.
         /// </summary>
@@ -118,7 +149,7 @@ namespace Whetstone.Collections.Enumerators
         /// </summary>
         public bool IsExhausted {
             get => FState == EnumeratorState.Exhausted;
-            set
+            protected set
             {
                 if (FState == EnumeratorState.Exhausted && !value)
                     FState = EnumeratorState.Ready;
@@ -126,9 +157,5 @@ namespace Whetstone.Collections.Enumerators
                     FState = EnumeratorState.Exhausted;
             }
         }
-        /// <summary>
-        /// Get a valud indicating whether this enumerator has been disposed.
-        /// </summary>
-        public bool IsDisposed => FState == EnumeratorState.Disposed;
     }
 }

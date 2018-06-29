@@ -9,13 +9,17 @@ namespace Whetstone.Collections
     /// Represents a <see cref="ICollection"/> of unique items.
     /// </summary>
     [PublicAPI]
-    public interface ISet : ICollection
+    public interface ISet :
+        ICollection
     {
         /// <summary>
         /// Check whether the specified item is contained in the set.
         /// </summary>
         /// <param name="AItem">The item to look for.</param>
-        /// <returns><c>true</c> if <paramref name="AItem"/> is part of the set; otherwise <c>false</c>.</returns>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="AItem"/> is part of the set;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
         /// <remarks>
         /// Equality is checked using <see cref="EqualityComparer"/>.
         /// </remarks>
@@ -33,13 +37,18 @@ namespace Whetstone.Collections
     /// </summary>
     /// <typeparam name="T">The item type.</typeparam>
     [PublicAPI]
-    public interface ISet<T> : ISet, ICollection<T>
+    public interface ISet<T> :
+        ISet,
+        ICollection<T>
     {
         /// <summary>
         /// Check whether the specified item is contained in the set.
         /// </summary>
         /// <param name="AItem">The item to look for.</param>
-        /// <returns><c>true</c> if <paramref name="AItem"/> is part of the set; otherwise <c>false</c>.</returns>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="AItem"/> is part of the set;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
         /// <remarks>
         /// Equality is checked using <see cref="EqualityComparer"/>.
         /// </remarks>
