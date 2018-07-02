@@ -121,6 +121,23 @@ namespace Whetstone.Contracts
         }
 
         [Test]
+        [Description("ThrowIfError on erroneous throws the contained error.")]
+        public void ThrowIfError_Erroneous_ThrowsContainedError()
+        {
+            Assert.That(
+                () => Result.Fail<int>(_FCommonError).ThrowIfError(),
+                Throws.Exception.SameAs(_FCommonError)
+            );
+        }
+
+        [Test]
+        [Description("ThrowIfError on successful does nothing.")]
+        public void ThrowIfError_Successful_DoesNothing()
+        {
+            Result.Ok(1).ThrowIfError();
+        }
+
+        [Test]
         [Description("Getting value on erroneous throws the contained error.")]
         public void GetValue_Erroneous_ThrowsContainedError()
         {
@@ -142,6 +159,94 @@ namespace Whetstone.Contracts
         public void GetError_Successful_ReturnsNull()
         {
             Assert.That(Result.Ok(1).Error, Is.Null);
+        }
+
+        [TestCase(null, Description = "Null values are valid success values.")]
+        [TestCase("abc", Description = "Non-null values are valid success values.")]
+        [Description("Implicit cast from value type returns a successful Result.")]
+        public void ImplicitCast_FromValue_IsSuccessful(object AValue)
+        {
+            Result<object> test = AValue;
+            Assert.That(test.IsSuccess, Is.True);
+            Assert.That(test.Value == AValue, Is.True);
+        }
+
+        [Test]
+        [Description("Implicit cast to value type on erroneous throws the contained error.")]
+        public void ImplicitCast_ToValueErroneous_ThrowsContainedError()
+        {
+            Assert.That(() =>
+            {
+                int _ = Result.Fail<int>(_FCommonError);
+            }, Throws.Exception.SameAs(_FCommonError));
+        }
+
+        [Test]
+        [Description("Implicit cast to value type on successful returns value.")]
+        public void ImplicitCast_ToValueSuccessful_IsValue()
+        {
+            int I = Result.Ok(0);
+
+            Assert.That(I, Is.Zero);
+        }
+
+        [Test]
+        [Description("Implicit cast from null Exception throws ArgumentNullException.")]
+        public void ImplicitCast_FromNullException_ThrowsArgumentNullException()
+        {
+            Assert.That(() =>
+            {
+                Result<int> _ = (Exception)null;
+            }, Throws.ArgumentNullException);
+        }
+
+        [Test]
+        [Description("Implicit cast from Exception is erroneous Result.")]
+        public void ImplicitCast_FromException_IsErroneous()
+        {
+            Result<int> result = _FCommonError;
+
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.Error, Is.SameAs(_FCommonError));
+        }
+
+        [Test]
+        [Description("Implicit cast to Exception of erroneous is contained error.")]
+        public void ImplicitCast_ToExceptionErroneous_IsContainedError()
+        {
+            Exception error = Result.Fail<int>(_FCommonError);
+
+            Assert.That(error, Is.SameAs(_FCommonError));
+        }
+
+        [Test]
+        [Description("Implicit cast to Exception of successful is null.")]
+        public void ImplicitCast_ToExceptionSuccessful_IsNull()
+        {
+            Exception error = Result.Ok(0);
+
+            Assert.That(error, Is.Null);
+        }
+
+        [TestCaseSource(nameof(ResResAlikeTestCases))]
+        [Description("Binary equals operator on Results is correct.")]
+        public bool EqOp_OptOpt_Correct(Result<int> ALeft, Result<int> ARight)
+        {
+            return ALeft == ARight && !(ALeft != ARight);
+        }
+
+        [TestCaseSource(nameof(ResIntAlikeTestCases))]
+        [Description("Binary equals operator on Result and value is correct.")]
+        public bool EqOp_OptVal_Correct(Result<int> ALeft, int ARight)
+        {
+            return ALeft == ARight && !(ALeft != ARight);
+        }
+
+        [TestCaseSource(nameof(ResExcTestCases))]
+        [Description("Binary equals operator on Result and Exception is correct.")]
+        public bool EqOp_OptVal_Correct(Result<int> ALeft, Exception ARight)
+        {
+            return ALeft == ARight && !(ALeft != ARight);
         }
 
         [UsedImplicitly]

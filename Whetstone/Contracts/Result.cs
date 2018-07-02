@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
 using JetBrains.Annotations;
 
 namespace Whetstone.Contracts
 {
     /// <summary>
-    ///
+    /// Provides static factory methods for the <see cref="Result{T}"/> type.
     /// </summary>
     [PublicAPI]
     public static class Result
@@ -44,9 +42,14 @@ namespace Whetstone.Contracts
     }
 
     /// <summary>
-    ///
+    /// Value type keeping the semantics of a no-throw function that maybe returns a value or an
+    /// error.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of the contained value.</typeparam>
+    /// <remarks>
+    /// For simplicity's sake the implementation of <see cref="Result{T}"/> assumes that
+    /// <typeparamref name="T"/> is never <see cref="Exception"/> or derived from it.
+    /// </remarks>
     [PublicAPI]
     public readonly struct Result<T> :
         IEquatable<Result<T>>,
@@ -180,6 +183,16 @@ namespace Whetstone.Contracts
         #endregion
 
         /// <summary>
+        /// Throw the contained error if this <see cref="Result{T}"/> is erroneous.
+        /// </summary>
+        /// <exception cref="Exception">This result is erroneous..</exception>
+        [DebuggerHidden]
+        public void ThrowIfError()
+        {
+            if (!IsSuccess) throw UnboxError;
+        }
+
+        /// <summary>
         /// Get a value indicating whether this result indicates a success.
         /// </summary>
         public bool IsSuccess { get; }
@@ -193,6 +206,100 @@ namespace Whetstone.Contracts
         /// </summary>
         [CanBeNull]
         public Exception Error => IsSuccess ? null : UnboxError;
+
+        /// <summary>
+        /// Implicitly unwraps the contents of a <see cref="Result{T}"/>.
+        /// </summary>
+        /// <param name="AResult">The <see cref="Result{T}"/> to unwrap.</param>
+        /// <exception cref="Exception">The result is erroneous.</exception>
+        [Pure]
+        public static implicit operator T(Result<T> AResult) => AResult.Value;
+        /// <summary>
+        /// Implicitly initializes a successful <see cref="Result{T}"/>.
+        /// </summary>
+        /// <param name="AValue">The success value.</param>
+        [Pure]
+        public static implicit operator Result<T>(T AValue) => new Result<T>(AValue);
+
+        /// <summary>
+        /// Implicitly unwraps the error of a <see cref="Result{T}"/>.
+        /// </summary>
+        /// <param name="AResult">The <see cref="Result{T}"/> to unwrap.</param>
+        [Pure]
+        public static implicit operator Exception(Result<T> AResult) => AResult.Error;
+        /// <summary>
+        /// Implicitly initializes an erroneous <see cref="Result{T}"/>.
+        /// </summary>
+        /// <param name="AError">The error.</param>
+        [Pure]
+        [ContractAnnotation("AError: null => halt;")]
+        public static implicit operator Result<T>([NotNull] Exception AError)
+            => new Result<T>(AError);
+
+        /// <summary>
+        /// Shorthand for calling <see cref="Result{T}.Equals(Result{T})"/>.
+        /// </summary>
+        /// <param name="ALeft">The left <see cref="Result{T}"/>.</param>
+        /// <param name="ARight">The right <see cref="Result{T}"/>.</param>
+        /// <returns>
+        /// <see langword="true"/> if the two <see cref="Result{T}"/>s are equal;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
+        public static bool operator ==(Result<T> ALeft, Result<T> ARight)
+            => ALeft.Equals(ARight);
+        /// <summary>
+        /// Shorthand for calling <see cref="Result{T}.Equals(Result{T})"/> and inverting.
+        /// </summary>
+        /// <param name="ALeft">The left <see cref="Optional{T}"/>.</param>
+        /// <param name="ARight">The right <see cref="Optional{T}"/>.</param>
+        /// <returns>
+        /// <see langword="true"/> if the two <see cref="Optional{T}"/>s are inequal;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
+        public static bool operator !=(Result<T> ALeft, Result<T> ARight)
+            => !ALeft.Equals(ARight);
+
+        /// <summary>
+        /// Shorthand for calling <see cref="Result{T}.Equals(T)"/>.
+        /// </summary>
+        /// <param name="ALeft">The <see cref="Result{T}"/>.</param>
+        /// <param name="ARight">The value.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <see cref="Result{T}"/> and the value are equal;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
+        public static bool operator ==(Result<T> ALeft, T ARight) => ALeft.Equals(ARight);
+        /// <summary>
+        /// Shorthand for calling <see cref="Result{T}.Equals(T)"/> and inverting.
+        /// </summary>
+        /// <param name="ALeft">The <see cref="Result{T}"/>.</param>
+        /// <param name="ARight">The value.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <see cref="Result{T}"/> and the value are inequal;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
+        public static bool operator !=(Result<T> ALeft, T ARight) => !ALeft.Equals(ARight);
+
+        /// <summary>
+        /// Shorthand for calling <see cref="Result{T}.Equals(Exception)"/>.
+        /// </summary>
+        /// <param name="ALeft">The <see cref="Result{T}"/>.</param>
+        /// <param name="ARight">The value.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <see cref="Result{T}"/> and the error are equal;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
+        public static bool operator ==(Result<T> ALeft, Exception ARight) => ALeft.Equals(ARight);
+        /// <summary>
+        /// Shorthand for calling <see cref="Result{T}.Equals(Exception)"/> and inverting.
+        /// </summary>
+        /// <param name="ALeft">The <see cref="Result{T}"/>.</param>
+        /// <param name="ARight">The value.</param>
+        /// <returns>
+        /// <see langword="true"/> if the <see cref="Result{T}"/> and the error are inequal;
+        /// otherwise <see langword="false"/>.
+        /// </returns>
+        public static bool operator !=(Result<T> ALeft, Exception ARight) => !ALeft.Equals(ARight);
     }
 
     /// <summary>

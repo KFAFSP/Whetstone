@@ -317,6 +317,7 @@ namespace Whetstone.Contracts
         {
             Optional<object> test = AValue;
             Assert.That(test.IsPresent, Is.True);
+            Assert.That(test.Value == AValue, Is.True);
         }
 
         [Test]
@@ -363,14 +364,14 @@ namespace Whetstone.Contracts
         }
 
         [TestCaseSource(nameof(OptOptAlikeTestCases))]
-        [Description("Binary equals operator on optionals is correct.")]
+        [Description("Binary equals operator on Optionals is correct.")]
         public bool EqOp_OptOpt_Correct(Optional<int> ALeft, Optional<int> ARight)
         {
             return ALeft == ARight && !(ALeft != ARight);
         }
 
         [TestCaseSource(nameof(OptIntAlikeTestCases))]
-        [Description("Binary equals operator on optional and value is correct.")]
+        [Description("Binary equals operator on Optional and value is correct.")]
         public bool EqOp_OptVal_Correct(Optional<int> ALeft, int ARight)
         {
             return ALeft == ARight && !(ALeft != ARight);

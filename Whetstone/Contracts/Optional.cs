@@ -390,7 +390,7 @@ namespace Whetstone.Contracts
         /// </returns>
         public static bool operator ==(Optional<T> ALeft, T ARight) => ALeft.Equals(ARight);
         /// <summary>
-        /// Shorthand for calling <see cref="Optional{T}.Equals(T)"/>.
+        /// Shorthand for calling <see cref="Optional{T}.Equals(T)"/> and inverting.
         /// </summary>
         /// <param name="ALeft">The <see cref="Optional{T}"/>.</param>
         /// <param name="ARight">The value.</param>
