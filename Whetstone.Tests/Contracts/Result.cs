@@ -5,6 +5,8 @@ using JetBrains.Annotations;
 
 using NUnit.Framework;
 
+// ReSharper disable AssignNullToNotNullAttribute
+
 namespace Whetstone.Contracts
 {
     [TestFixture]
@@ -74,6 +76,200 @@ namespace Whetstone.Contracts
 
             Assert.That(fail.IsSuccess, Is.False);
             Assert.That(fail.Error, Is.SameAs(error));
+        }
+
+        [Test]
+        [Description("OnSuccess on null action throws ArgumentNullException.")]
+        public void OnSuccess_ActionIsNull_ThrowsArgumentNullException()
+        {
+            Assert.That(() => Result.Ok(0).OnSuccess(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        [Description("OnSuccess on erroneous Result does not call action.")]
+        public void OnSuccess_Erroneous_ActionIsNotCalled()
+        {
+            Result<int>.Uninitialized.OnSuccess(X => { Assert.Fail("Action was called."); });
+        }
+
+        [Test]
+        [Description("OnSuccess on successful Result calls action with the value.")]
+        public void OnSuccess_Successful_CallsActionWithValue()
+        {
+            var called = false;
+            Result.Ok(0).OnSuccess(X =>
+            {
+                called = true;
+                Assert.That(X, Is.Zero);
+            });
+
+            Assert.That(called, Is.True);
+        }
+
+        [Test]
+        [Description("OnSuccess on successful up-propagates an exception thrown in the action.")]
+        public void OnSuccess_Successful_PropagatesActionException()
+        {
+            var error = new Exception();
+            Assert.That(
+                () => Result.Ok(0).OnSuccess(X => throw error),
+                Throws.Exception.SameAs(error)
+            );
+        }
+
+        [Test]
+        [Description("OnError on null action throws ArgumentNullException.")]
+        public void OnError_ActionIsNull_ThrowsArgumentNullException()
+        {
+            Assert.That(() => Result.Ok(0).OnError<Exception>(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        [Description("OnError on matching erroneous Result calls action with the error.")]
+        public void OnError_MatchingErroneous_ActionIsCalledWithError()
+        {
+            var called = false;
+            Result.Fail<int>(_FCommonError).OnError<NotSupportedException>(X =>
+            {
+                called = true;
+                Assert.That(X, Is.SameAs(_FCommonError));
+            });
+
+            Assert.That(called, Is.True);
+        }
+
+        [Test]
+        [Description("OnError on mismatched erroneous Result does not call action.")]
+        public void OnError_MismatchedErroneous_ActionIsNotCalled()
+        {
+            Result.Ok(0).OnError<InvalidOperationException>(X => Assert.Fail("Action was called."));
+        }
+
+        [Test]
+        [Description("OnError on erroneous up-propagates an exception thrown in the action.")]
+        public void OnError_Erroneous_PropagatesActionException()
+        {
+            var error = new Exception();
+            Assert.That(
+                () => Result.Fail<int>(_FCommonError).OnError<Exception>(X => throw error),
+                Throws.Exception.SameAs(error)
+            );
+        }
+
+        [Test]
+        [Description("OnError on successful Result does not call action.")]
+        public void OnError_Successful_ActionIsNotCalled()
+        {
+            Result.Ok(0).OnError<Exception>(X => Assert.Fail("Action was called."));
+        }
+
+        [Test]
+        [Description("OnError on null action throws ArgumentNullException.")]
+        public void OnError2_ActionIsNull_ThrowsArgumentNullException()
+        {
+            Assert.That(() => Result.Ok(0).OnError(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        [Description("OnError on erroneous Result calls action with the error.")]
+        public void OnError2_Erroneous_ActionIsCalledWithError()
+        {
+            var called = false;
+            Result.Fail<int>(_FCommonError).OnError(X =>
+            {
+                called = true;
+                Assert.That(X, Is.SameAs(_FCommonError));
+            });
+
+            Assert.That(called, Is.True);
+        }
+
+        [Test]
+        [Description("OnError on erroneous up-propagates an exception thrown in the action.")]
+        public void OnError2_Erroneous_PropagatesActionException()
+        {
+            var error = new Exception();
+            Assert.That(
+                () => Result.Fail<int>(_FCommonError).OnError(X => throw error),
+                Throws.Exception.SameAs(error)
+            );
+        }
+
+        [Test]
+        [Description("OnError on successful Result does not call action.")]
+        public void OnError2_Successful_ActionIsNotCalled()
+        {
+            Result.Ok(0).OnError(X => Assert.Fail("Action was called."));
+        }
+
+        [Test]
+        [Description("AndThen on null function throws ArgumentNullException.")]
+        public void AndThen_FunctionIsNull_ThrowsArgumentNullException()
+        {
+            Assert.That(() => Result.Ok(0).AndThen<int>(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        [Description("AndThen on successful wraps the function result.")]
+        public void AndThen_Successful_WrapsResult()
+        {
+            Assert.That(Result.Ok(2).AndThen(X => X * 2).Value, Is.EqualTo(4));
+        }
+
+        [Test]
+        [Description("AndThen on erroneous propagates the error..")]
+        public void AndThen_Erroneous_PropagatesError()
+        {
+            Assert.That(
+                Result.Fail<int>(_FCommonError).AndThen(X => X * 2).Error,
+                Is.SameAs(_FCommonError)
+            );
+        }
+
+        [Test]
+        [Description("AndThen on successful up-propagates an exception thrown in the function.")]
+        public void AndThen_Successful_PropagatesFunctionException()
+        {
+            var error = new Exception();
+            Assert.That(
+                () => Result.Ok(1).AndThen<object>(X => throw error),
+                Throws.Exception.SameAs(error)
+            );
+        }
+
+        [Test]
+        [Description("AndThenTry on null function throws ArgumentNullException.")]
+        public void AndThenTry_FunctionIsNull_ThrowsArgumentNullException()
+        {
+            Assert.That(() => Result.Ok(0).AndThenTry<int>(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        [Description("AndThenTry on successful wraps the function result.")]
+        public void AndThenTry_Successful_WrapsResult()
+        {
+            Assert.That(Result.Ok(2).AndThenTry(X => X * 2).Value, Is.EqualTo(4));
+        }
+
+        [Test]
+        [Description("AndThenTry on erroneous propagates the error..")]
+        public void AndThenTry_Erroneous_PropagatesError()
+        {
+            Assert.That(
+                Result.Fail<int>(_FCommonError).AndThenTry(X => X * 2).Error,
+                Is.SameAs(_FCommonError)
+            );
+        }
+
+        [Test]
+        [Description("AndThenTry on successfulwraps an exception thrown in the function.")]
+        public void AndThenTry_Successful_WrapsFunctionException()
+        {
+            var error = new Exception();
+            Assert.That(
+                Result.Ok(1).AndThenTry<object>(X => throw error).Error,
+                Is.SameAs(error)
+            );
         }
 
         [TestCaseSource(nameof(ResResAlikeTestCases))]

@@ -85,6 +85,109 @@ namespace Whetstone.Contracts
             IsSuccess = false;
         }
 
+        /// <summary>
+        /// Execute an <see cref="Action{T}"/> on the successful value (if any).
+        /// </summary>
+        /// <param name="AAction">The <see cref="Action{T}"/>.</param>
+        /// <returns>This <see cref="Result{T}"/>.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AAction"/> is <see langword="null"/>.
+        /// </exception>
+        [ContractAnnotation("AAction: null => halt;")]
+        public Result<T> OnSuccess([NotNull] [InstantHandle] Action<T> AAction)
+        {
+            if (AAction == null) throw new ArgumentNullException(nameof(AAction));
+
+            if (IsSuccess)
+                AAction(UnboxValue);
+            return this;
+        }
+
+        /// <summary>
+        /// Execute an <see cref="Action{T}"/> on the contained matching error (if any).
+        /// </summary>
+        /// <typeparam name="TException">The type of expected error.</typeparam>
+        /// <param name="AAction">The <see cref="Action{T}"/>.</param>
+        /// <returns>This <see cref="Result{T}"/>.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AAction"/> is <see langword="null"/>.
+        /// </exception>
+        [ContractAnnotation("AAction: null => halt;")]
+        public Result<T> OnError<TException>([NotNull] [InstantHandle] Action<TException> AAction)
+            where TException : Exception
+        {
+            if (AAction == null) throw new ArgumentNullException(nameof(AAction));
+
+            if (!IsSuccess && UnboxError is TException error)
+                AAction(error);
+
+            return this;
+        }
+        /// <summary>
+        /// Execute an <see cref="Action{T}"/> on the contained error (if any).
+        /// </summary>
+        /// <param name="AAction">The <see cref="Action{T}"/>.</param>
+        /// <returns>This <see cref="Result{T}"/>.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AAction"/> is <see langword="null"/>.
+        /// </exception>
+        [ContractAnnotation("AAction: null => halt;")]
+        public Result<T> OnError([NotNull] [InstantHandle] Action<Exception> AAction)
+            => OnError<Exception>(AAction);
+
+        /// <summary>
+        /// Compute a <see cref="Func{T, TResult}"/> on the successful value (if any) and propagate
+        /// the results.
+        /// </summary>
+        /// <typeparam name="TOut">The output type.</typeparam>
+        /// <param name="AFunc">The <see cref="Func{T, TResult}"/>.</param>
+        /// <returns>
+        /// A <see cref="Result{T}"/> wrapping the result of <paramref name="AFunc"/> or propagating
+        /// the contained error.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AFunc"/> is <see langword="null"/>.
+        /// </exception>
+        [ContractAnnotation("AFunc: null => halt;")]
+        public Result<TOut> AndThen<TOut>([NotNull] [InstantHandle] Func<T, TOut> AFunc)
+        {
+            if (AFunc == null) throw new ArgumentNullException(nameof(AFunc));
+
+            return IsSuccess
+                ? new Result<TOut>(AFunc(UnboxValue))
+                : new Result<TOut>(UnboxError);
+        }
+        /// <summary>
+        /// Compute a <see cref="Func{T, TResult}"/> on the successful value (if any) and propagate
+        /// the results, or catch and propagate the error.
+        /// </summary>
+        /// <typeparam name="TOut">The output type.</typeparam>
+        /// <param name="AFunc">The <see cref="Func{T, TResult}"/>.</param>
+        /// <returns>
+        /// A <see cref="Result{T}"/> wrapping the result of <paramref name="AFunc"/> or propagating
+        /// the contained error or propagating the error during <paramref name="AFunc"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AFunc"/> is <see langword="null"/>.
+        /// </exception>
+        [ContractAnnotation("AFunc: null => halt;")]
+        public Result<TOut> AndThenTry<TOut>([NotNull] [InstantHandle] Func<T, TOut> AFunc)
+        {
+            if (AFunc == null) throw new ArgumentNullException(nameof(AFunc));
+
+            if (!IsSuccess)
+                return new Result<TOut>(UnboxError);
+
+            try
+            {
+                return new Result<TOut>(AFunc(UnboxValue));
+            }
+            catch (Exception error)
+            {
+                return new Result<TOut>(error);
+            }
+        }
+
         #region IEquatable<Result<T>>
         /// <inheritdoc />
         [Pure]
