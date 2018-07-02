@@ -242,10 +242,10 @@ namespace Whetstone.Contracts
             Assert.That(Optional.Present(1), Is.EquivalentTo(new []{1}));
         }
 
-        [TestCaseSource(nameof(OptOptEqualsTestCases))]
-        [TestCaseSource(nameof(OptIntEqualsTestCases))]
-        [TestCaseSource(nameof(OptOptInequalTestCase))]
-        [Description("Equals on optional and any is correct.")]
+        [TestCaseSource(nameof(OptOptAlikeTestCases))]
+        [TestCaseSource(nameof(OptIntAlikeTestCases))]
+        [TestCaseSource(nameof(OptAnyNotAlikeTestCases))]
+        [Description("Equals on Optional and any is correct.")]
         public bool Equals_OptAny_Correct(object AOptional, object AOther)
         {
             return AOptional.Equals(AOther);
@@ -339,8 +339,8 @@ namespace Whetstone.Contracts
         }
 
         [TestCaseSource(nameof(OptOptOrTestCase))]
-        [Description("")]
-        public Optional<int> BinaryOr_OptOpt_ReturnsPresentOrFirst(
+        [Description("Binary or with Optionals returns the present one if any.")]
+        public Optional<int> BinaryOr_OptOpt_ReturnsPresentIfAny(
             Optional<int> ALeft,
             Optional<int> ARight
         )
@@ -362,14 +362,14 @@ namespace Whetstone.Contracts
             Assert.That(Optional.Present(0) | 1, Is.EqualTo(0));
         }
 
-        [TestCaseSource(nameof(OptOptEqualsTestCases))]
+        [TestCaseSource(nameof(OptOptAlikeTestCases))]
         [Description("Binary equals operator on optionals is correct.")]
         public bool EqOp_OptOpt_Correct(Optional<int> ALeft, Optional<int> ARight)
         {
             return ALeft == ARight && !(ALeft != ARight);
         }
 
-        [TestCaseSource(nameof(OptIntEqualsTestCases))]
+        [TestCaseSource(nameof(OptIntAlikeTestCases))]
         [Description("Binary equals operator on optional and value is correct.")]
         public bool EqOp_OptVal_Correct(Optional<int> ALeft, int ARight)
         {
@@ -377,7 +377,7 @@ namespace Whetstone.Contracts
         }
 
         [UsedImplicitly]
-        public static IEnumerable OptOptEqualsTestCases
+        public static IEnumerable OptOptAlikeTestCases
         {
             get
             {
@@ -394,7 +394,7 @@ namespace Whetstone.Contracts
         }
 
         [UsedImplicitly]
-        public static IEnumerable OptIntEqualsTestCases
+        public static IEnumerable OptIntAlikeTestCases
         {
             get
             {
@@ -411,7 +411,7 @@ namespace Whetstone.Contracts
         }
 
         [UsedImplicitly]
-        public static IEnumerable OptOptInequalTestCase
+        public static IEnumerable OptAnyNotAlikeTestCases
         {
             get
             {
@@ -421,6 +421,9 @@ namespace Whetstone.Contracts
                 yield return new TestCaseData(Optional.Present(0), Optional.Present("asd"))
                     .Returns(false)
                     .SetDescription("Present with different-typed present is false.");
+                yield return new TestCaseData(Optional.Present(0), "asd")
+                    .Returns(false)
+                    .SetDescription("Present with different-typed value is false.");
             }
         }
 

@@ -44,6 +44,7 @@
     <Compile Include="Contracts\ContractHelpers.cs" />
     <Compile Include="Contracts\Disposable.cs" />
     <Compile Include="Contracts\Optional.cs" />
+    <Compile Include="Contracts\Result.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
