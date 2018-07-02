@@ -42,7 +42,7 @@ namespace Whetstone.Contracts
     /// contains exactly the wrapped value.
     /// </remarks>
     [PublicAPI]
-    public struct Optional<T> :
+    public readonly struct Optional<T> :
         IEquatable<T>,
         IEquatable<Optional<T>>,
         SCG.IEnumerable<T>

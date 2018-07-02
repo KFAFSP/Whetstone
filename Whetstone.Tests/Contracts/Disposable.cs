@@ -9,9 +9,9 @@ namespace Whetstone.Contracts
 {
     [TestFixture]
     [TestOf(typeof(Disposable))]
-    public class DisposableTests
+    public sealed class DisposableTests
     {
-        public class Exemplar : Disposable
+        public sealed class Exemplar : Disposable
         {
             public static int Disposed;
 
