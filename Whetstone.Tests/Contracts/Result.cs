@@ -272,6 +272,20 @@ namespace Whetstone.Contracts
             );
         }
 
+        [Test]
+        [Description("IgnoreError on successful returns present Optional.")]
+        public void IgnoreError_Successful_WrapsValue()
+        {
+            Assert.That(Result.Ok(1).IgnoreError().Value, Is.EqualTo(1));
+        }
+
+        [Test]
+        [Description("IgnoreError on successful returns present Optional.")]
+        public void IgnoreError_Erroneous_ReturnsAbsent()
+        {
+            Assert.That(Result<int>.Uninitialized.IgnoreError().IsPresent, Is.False);
+        }
+
         [TestCaseSource(nameof(ResResAlikeTestCases))]
         [TestCaseSource(nameof(ResIntAlikeTestCases))]
         [TestCaseSource(nameof(ResExcTestCases))]
@@ -539,6 +553,28 @@ namespace Whetstone.Contracts
     [TestOf(typeof(ResultExtensionsTests))]
     public sealed class ResultExtensionsTests
     {
+        [Test]
+        [Description("Try with null function throws ArgumentNullException.")]
+        public void Try_FuncIsNull_ThrowsArgumentNullException()
+        {
+            Assert.That(() => ((Func<int>) null).Try(), Throws.ArgumentNullException);
+        }
 
+        [Test]
+        [Description("Try with successful function call wraps it's result.")]
+        public void Try_FuncSucceeds_WrapsResult()
+        {
+            Func<int> gen = () => 1;
+            Assert.That(gen.Try().Value, Is.EqualTo(1));
+        }
+
+        [Test]
+        [Description("Try with throwing function call wraps it's error.")]
+        public void Try_FuncFails_WrapsError()
+        {
+            var error = new Exception();
+            Func<int> gen = () => throw error;
+            Assert.That(gen.Try().Error, Is.SameAs(error));
+        }
     }
 }

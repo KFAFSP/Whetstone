@@ -188,6 +188,17 @@ namespace Whetstone.Contracts
             }
         }
 
+        /// <summary>
+        /// Ignore the contained error (if any).
+        /// </summary>
+        /// <returns>An <see cref="Optional{T}"/> wrapping the successful value.</returns>
+        public Optional<T> IgnoreError()
+        {
+            return IsSuccess
+                ? new Optional<T>(UnboxValue)
+                : Optional<T>.Absent;
+        }
+
         #region IEquatable<Result<T>>
         /// <inheritdoc />
         [Pure]
@@ -411,6 +422,30 @@ namespace Whetstone.Contracts
     [PublicAPI]
     public static class ResultExtensions
     {
+        /// <summary>
+        /// Try to compute a <see cref="Func{TResult}"/> and wrap it's result.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="AFunc">The <see cref="Func{TResult}"/>.</param>
+        /// <returns>
+        /// A <see cref="Result{T}"/> wrapping the result or any <see cref="Exception"/> thrown by
+        /// <paramref name="AFunc"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AFunc"/> is <see langword="null"/>.
+        /// </exception>
+        public static Result<T> Try<T>([NotNull] [InstantHandle] this Func<T> AFunc)
+        {
+            if (AFunc == null) throw new ArgumentNullException(nameof(AFunc));
 
+            try
+            {
+                return new Result<T>(AFunc());
+            }
+            catch (Exception error)
+            {
+                return new Result<T>(error);
+            }
+        }
     }
 }
