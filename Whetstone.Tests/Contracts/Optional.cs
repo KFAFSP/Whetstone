@@ -194,6 +194,42 @@ namespace Whetstone.Contracts
         }
 
         [Test]
+        [Description("OrThrow on present returns the present value.")]
+        public void OrThrow_Present_ReturnsValue()
+        {
+            Assert.That(Optional.Present(1).OrThrow<Exception>(), Is.EqualTo(1));
+        }
+
+        [Test]
+        [Description("OrThrow on absent throws a new TException.")]
+        public void OrThrow_Absent_ThrowsNew()
+        {
+            Assert.That(
+                () => Optional.Absent<int>().OrThrow<NotSupportedException>(),
+                Throws.Exception.InstanceOf<NotSupportedException>()
+            );
+        }
+
+        [Test]
+        [Description("OrThrow on present returns the present value.")]
+        public void OrThrow2_Present_ReturnsValue()
+        {
+            var error = new Exception();
+            Assert.That(Optional.Present(1).OrThrow(error), Is.EqualTo(1));
+        }
+
+        [Test]
+        [Description("OrThrow on absent throws the provided Exception.")]
+        public void OrThrow2_Absent_ThrowsGivenError()
+        {
+            var error = new Exception();
+            Assert.That(
+                () => Optional.Absent<int>().OrThrow(error),
+                Throws.Exception.SameAs(error)
+            );
+        }
+
+        [Test]
         [Description("As on absent propagates absent Optional.")]
         public void As_Absent_PropagatesAbsent()
         {

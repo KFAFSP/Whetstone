@@ -149,6 +149,36 @@ namespace Whetstone.Contracts
             => IsPresent ? FValue[0] : ADefault;
 
         /// <summary>
+        /// Unpack the present value or throw an <see cref="Exception"/>.
+        /// </summary>
+        /// <typeparam name="TException">The exception type.</typeparam>
+        /// <returns>The present value.</returns>
+        /// <exception cref="Exception">Value is absent.</exception>
+        [DebuggerHidden]
+        public T OrThrow<TException>()
+            where TException : Exception, new()
+        {
+            if (!IsPresent)
+                throw new TException();
+
+            return FValue[0];
+        }
+        /// <summary>
+        /// Unpack the present value or throw an <see cref="Exception"/>.
+        /// </summary>
+        /// <param name="AException">The exception.</param>
+        /// <returns>The present value.</returns>
+        /// <exception cref="Exception">Value is absent.</exception>
+        [DebuggerHidden]
+        public T OrThrow([CanBeNull] Exception AException = null)
+        {
+            if (!IsPresent)
+                throw AException ?? new InvalidOperationException(C_NotPresent);
+
+            return FValue[0];
+        }
+
+        /// <summary>
         /// Performs an <see langword="as"/> cast of the value if present; otherwise propagates
         /// absence.
         /// </summary>
