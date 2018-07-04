@@ -276,14 +276,14 @@ namespace Whetstone.Contracts
         /// <remarks>
         /// Specifically, this method returns <see langword="true"/> only if either:
         /// <list type="bullet">
-        /// <li>
+        /// <item><description>
         /// <paramref name="AObject"/> is another <see cref="Optional{T}"/> and
         /// <see cref="Optional{T}.Equals(Optional{T})"/> returns <see langword="true"/>.
-        /// </li>
-        /// <li>
+        /// </description></item>
+        /// <item><description>
         /// <paramref name="AObject"/> is a value of type <typeparamref name="T"/> and
         /// <see cref="Optional{T}.Equals(T)"/> returns <see langword="true"/>.
-        /// </li>
+        /// </description></item>
         /// </list>
         /// </remarks>
         [Pure]
