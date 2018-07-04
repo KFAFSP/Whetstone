@@ -211,6 +211,16 @@ namespace Whetstone.Contracts
         }
 
         [Test]
+        [Description("OrThrow on absent with null throws an InvalidOperationException.")]
+        public void OrThrow_AbsentWithNull_ThrowsInvalidOperationException()
+        {
+            Assert.That(
+                () => Optional.Absent<int>().OrThrow(null),
+                Throws.InvalidOperationException
+            );
+        }
+
+        [Test]
         [Description("OrThrow on present returns the present value.")]
         public void OrThrow2_Present_ReturnsValue()
         {
@@ -313,23 +323,6 @@ namespace Whetstone.Contracts
         public void ToString_Present_ReturnsValueToString()
         {
             Assert.That(Optional.Present(1).ToString(), Is.EqualTo("1"));
-        }
-
-        [Test]
-        [Description("ThrowIfAbsent on absent throws InvalidOperationException.")]
-        public void ThrowIfAbsent_Absent_ThrowsInvalidOperationException()
-        {
-            Assert.That(
-                () => Optional.Absent<int>().ThrowIfAbsent(),
-                Throws.InvalidOperationException
-            );
-        }
-
-        [Test]
-        [Description("ThrowIfAbsent on present does nothing.")]
-        public void ThrowIfAbsent_Present_DoesNothing()
-        {
-            Optional.Present(1).ThrowIfAbsent();
         }
 
         [Test]

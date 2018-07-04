@@ -296,9 +296,10 @@ namespace Whetstone.Contracts
 
                 case T value:
                     return Equals(value);
-            }
 
-            return false;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
@@ -324,17 +325,6 @@ namespace Whetstone.Contracts
                 ? FValue[0].ToString()
                 : $"Optional.Absent<{typeof(T).Name}>";
         #endregion
-
-        /// <summary>
-        /// Throw an <see cref="InvalidOperationException"/> if this <see cref="Optional{T}"/> is
-        /// absent.
-        /// </summary>
-        /// <exception cref="InvalidOperationException">This optional is absent.</exception>
-        [DebuggerHidden]
-        public void ThrowIfAbsent()
-        {
-            if (!IsPresent) throw new InvalidOperationException(C_NotPresent);
-        }
 
         /// <summary>
         /// Gets a value indicating whether the optional value is present.

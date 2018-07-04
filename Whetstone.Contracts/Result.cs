@@ -277,9 +277,10 @@ namespace Whetstone.Contracts
 
                 case Exception error:
                     return Equals(error);
-            }
 
-            return false;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
@@ -668,9 +669,10 @@ namespace Whetstone.Contracts
 
                 case Exception error:
                     return Equals(error);
-            }
 
-            return false;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
