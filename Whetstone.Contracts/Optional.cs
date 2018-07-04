@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 using JetBrains.Annotations;
-
-using SC = System.Collections;
-using SCG = System.Collections.Generic;
 
 namespace Whetstone.Contracts
 {
@@ -38,14 +37,14 @@ namespace Whetstone.Contracts
     /// </summary>
     /// <typeparam name="T">The type of the contained value.</typeparam>
     /// <remarks>
-    /// The <see cref="Optional{T}"/> is an <see cref="SCG.IEnumerable{T}"/> that is either empty or
+    /// The <see cref="Optional{T}"/> is an <see cref="IEnumerable{T}"/> that is either empty or
     /// contains exactly the wrapped value.
     /// </remarks>
     [PublicAPI]
     public readonly struct Optional<T> :
         IEquatable<T>,
         IEquatable<Optional<T>>,
-        SCG.IEnumerable<T>
+        IEnumerable<T>
     {
         /// <summary>
         /// The absent <see cref="Optional{T}"/>.
@@ -218,19 +217,19 @@ namespace Whetstone.Contracts
 
         #region IEnumerable<T>
         /// <summary>
-        /// Get an <see cref="SCG.IEnumerator{T}"/> that will yield the value if present, or nothing
+        /// Get an <see cref="IEnumerator{T}"/> that will yield the value if present, or nothing
         /// if absent.
         /// </summary>
-        /// <returns>A new <see cref="SCG.IEnumerator{T}"/> instance.</returns>
+        /// <returns>A new <see cref="IEnumerator{T}"/> instance.</returns>
         [Pure]
-        public SCG.IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             if (!IsPresent) yield break;
             yield return FValue[0];
         }
 
         [Pure]
-        SC.IEnumerator SC.IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
 
         #region IEquatable<T>
@@ -453,10 +452,10 @@ namespace Whetstone.Contracts
 
         /// <summary>
         /// Get an <see cref="Optional{T}"/> that contains the first value in the
-        /// <see cref="SCG.IEnumerable{T}"/>, or is absent if none found.
+        /// <see cref="IEnumerable{T}"/>, or is absent if none found.
         /// </summary>
         /// <typeparam name="T">The type of the value.</typeparam>
-        /// <param name="AEnumerable">The <see cref="SCG.IEnumerable{T}"/>.</param>
+        /// <param name="AEnumerable">The <see cref="IEnumerable{T}"/>.</param>
         /// <returns>
         /// An <see cref="Optional{T}"/> wrapping the first value in <paramref name="AEnumerable"/>;
         /// or is absent if it is empty.
@@ -467,7 +466,7 @@ namespace Whetstone.Contracts
         [MustUseReturnValue]
         [ContractAnnotation("AEnumerable: null => halt;")]
         public static Optional<T> IfAny<T>(
-            [NotNull] [InstantHandle] this SCG.IEnumerable<T> AEnumerable
+            [NotNull] [InstantHandle] this IEnumerable<T> AEnumerable
         )
         {
             if (AEnumerable == null) throw new ArgumentNullException(nameof(AEnumerable));
@@ -483,10 +482,10 @@ namespace Whetstone.Contracts
 
         /// <summary>
         /// Get an <see cref="Optional{T}"/> that contains the first value in the
-        /// <see cref="SCG.IEnumerable{T}"/> that matches the predicate, or is absent if none found.
+        /// <see cref="IEnumerable{T}"/> that matches the predicate, or is absent if none found.
         /// </summary>
         /// <typeparam name="T">The type of the value.</typeparam>
-        /// <param name="AEnumerable">The <see cref="SCG.IEnumerable{T}"/>.</param>
+        /// <param name="AEnumerable">The <see cref="IEnumerable{T}"/>.</param>
         /// <param name="APredicate">The predicate <see cref="Func{T, TResult}"/> to apply.</param>
         /// <returns>
         /// An <see cref="Optional{T}"/> wrapping the first value in <paramref name="AEnumerable"/>;
@@ -501,7 +500,7 @@ namespace Whetstone.Contracts
         [MustUseReturnValue]
         [ContractAnnotation("AEnumerable: null => halt; APredicate: null => halt;")]
         public static Optional<T> IfAny<T>(
-            [NotNull] [InstantHandle] this SCG.IEnumerable<T> AEnumerable,
+            [NotNull] [InstantHandle] this IEnumerable<T> AEnumerable,
             [NotNull] Func<T, bool> APredicate
         ) => AEnumerable
             .Where(APredicate ?? throw new ArgumentNullException(nameof(APredicate)))
