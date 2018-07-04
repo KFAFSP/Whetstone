@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whetstone", "Whetstone\Whetstone.csproj", "{4E398DE9-A03F-417E-81A1-AA1E01DAF4D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whetstone.Contracts", "Whetstone.Contracts\Whetstone.Contracts.csproj", "{4E398DE9-A03F-417E-81A1-AA1E01DAF4D6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whetstone.Tests", "Whetstone.Tests\Whetstone.Tests.csproj", "{C0D0002A-4124-4D7A-8CE1-5C815A6285DA}"
 EndProject
