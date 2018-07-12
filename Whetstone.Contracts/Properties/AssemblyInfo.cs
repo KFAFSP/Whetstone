@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Whetstone")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright (c) Karl F. A. Friebel 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 #endregion
@@ -18,6 +18,6 @@ using System.Runtime.CompilerServices;
 #endregion
 
 #region Version
-[assembly: AssemblyVersion("0.2.*")]
-[assembly: AssemblyFileVersion("0.2.0.0")]
+[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
 #endregion

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Whetstone.Contracts</id>
+    <version>1.0.0.0</version>
+    <title>Whetstone.Contracts</title>
+    <authors>Karl F. A. Friebel</authors>
+    <owners>KFAFSP</owners>
+    <licenseUrl>https://github.com/KFAFSP/Whetstone/blob/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/KFAFSP/Whetstone/tree/master/Whetstone.Contracts</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A .NET library aiming to provide reliable extensions and alternatives to built-ins.</description>
+    <releaseNotes>Initial dependency distribution.</releaseNotes>
+    <copyright>Copyright (c) Karl F. A. Friebel 2018</copyright>
+    <tags></tags>
+  </metadata>
+</package>
