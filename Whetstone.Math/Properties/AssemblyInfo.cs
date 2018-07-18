@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 #region Assembly description
-[assembly: AssemblyTitle("Whetstone.Contracts")]
+[assembly: AssemblyTitle("Whetstone.Math")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]

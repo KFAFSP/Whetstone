@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whetstone.Contracts", "Whet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whetstone.Tests", "Whetstone.Tests\Whetstone.Tests.csproj", "{C0D0002A-4124-4D7A-8CE1-5C815A6285DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whetstone.Math", "Whetstone.Math\Whetstone.Math.csproj", "{ED80AC99-39BB-4D00-A86B-66393387FFE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C0D0002A-4124-4D7A-8CE1-5C815A6285DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0D0002A-4124-4D7A-8CE1-5C815A6285DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0D0002A-4124-4D7A-8CE1-5C815A6285DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED80AC99-39BB-4D00-A86B-66393387FFE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED80AC99-39BB-4D00-A86B-66393387FFE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED80AC99-39BB-4D00-A86B-66393387FFE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED80AC99-39BB-4D00-A86B-66393387FFE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
