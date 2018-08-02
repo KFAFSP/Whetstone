@@ -1,0 +1,106 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+
+using JetBrains.Annotations;
+
+namespace Whetstone.Math
+{
+    public static partial class Math
+    {
+<#
+		WriteGcd("int", true);
+		WriteGcd("uint", false);
+		WriteGcd("long", true);
+		WriteGcd("ulong", false);
+#>
+    }
+}
+
+<#+
+private void WriteGcd2(string AIntType, bool ASigned)
+{
+#>
+		/// <summary>
+        /// Get the greatest common divisor of two integers.
+        /// </summary>
+        /// <param name="A1">The first integer.</param>
+        /// <param name="A2">The second integer.</param>
+        /// <returns>
+        /// The greatest common divisor of <paramref name="A1"/> and <paramref name="A2"/>.
+        /// </returns>
+<#+
+	if (ASigned)
+	{
+#>
+        /// <remarks>
+        /// The sign of the result is always guaranteed to be positive.
+        /// </remarks>
+<#+
+	}
+#>
+        [Pure]
+        public static <#= AIntType #> Gcd(<#= AIntType #> A1, <#= AIntType #> A2)
+        {
+            if (A1 == 0) return <#+ if (ASigned) {#>System.Math.Abs(A2)<#+} else {#>A2<#+}#>;
+
+            while (A2 != 0)
+            {
+                var temp = A1 % A2;
+                A1 = A2;
+                A2 = temp;
+            }
+
+            return <#+ if (ASigned) {#>System.Math.Abs(A1)<#+} else {#>A1<#+}#>;
+        }
+<#+
+}
+
+private void WriteGcdN(string AIntType, bool ASigned)
+{
+#>
+		/// <summary>
+        /// Get the greatest common divisor of an array of integers.
+        /// </summary>
+        /// <param name="A">The array of integers.</param>
+        /// <returns>The greatest common divisor of <paramref name="A"/>.</returns>
+<#+
+	if (ASigned)
+	{
+#>
+        /// <remarks>
+        /// The sign of the result is always guaranteed to be positive.
+        /// </remarks>
+<#+
+	}
+#>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="A"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException"><paramref name="A"/> is empty.</exception>
+        [Pure]
+        [ContractAnnotation("A: null => halt;")]
+        public static <#= AIntType #> Gcd([NotNull] params <#= AIntType #>[] A)
+        {
+            if (A == null) throw new ArgumentNullException(nameof(A));
+            if (A.Length == 0) throw new ArgumentException("No arguments specified.", nameof(A));
+            var result = A[0];
+
+            for (var I = 1; I < A.Length; ++I)
+                result = Gcd(result, A[I]);
+
+            return result;
+        }
+<#+
+}
+
+private void WriteGcd(string AIntType, bool ASigned)
+{
+	WriteGcd2(AIntType, ASigned);
+	WriteGcdN(AIntType, ASigned);
+}
+#>

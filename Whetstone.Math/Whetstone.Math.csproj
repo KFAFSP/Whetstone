@@ -38,12 +38,37 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Math.cs" />
+    <Compile Include="Generated\Math.Gcd.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Math.Gcd.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Generated\Math.Lcm.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Math.Lcm.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations">
       <Version>11.1.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Generated\.gitignore" />
+    <Content Include="Generated\Math.Gcd.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Math.Gcd.cs</LastGenOutput>
+    </Content>
+    <Content Include="Generated\Math.Lcm.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Math.Lcm.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
