@@ -8,10 +8,10 @@ namespace Whetstone.Contracts
 {
     /// <summary>
     /// Value type keeping the semantics of a no-throw function that maybe returns
-    /// <see cref="void"/> or an error.
+    /// <see langword="void"/> or an error.
     /// </summary>
     /// <remarks>
-    /// If your function returns non-<see cref="void"/>, consider using <see cref="Result{T}"/>
+    /// If your function returns non-<see langword="void"/>, consider using <see cref="Result{T}"/>
     /// instead.
     /// </remarks>
     [PublicAPI]
@@ -435,7 +435,8 @@ namespace Whetstone.Contracts
     /// <typeparam name="T">The type of the contained value.</typeparam>
     /// <remarks>
     /// <para>
-    /// If your function returns <see cref="void"/>, consider using <see cref="Result"/> instead.
+    /// If your function returns <see langword="void"/>, consider using <see cref="Result"/>
+    /// instead.
     /// </para>
     /// <para>
     /// For simplicity's sake the implementation of <see cref="Result{T}"/> assumes that
