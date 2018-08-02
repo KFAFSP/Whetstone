@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Whetstone.Contracts</id>
-    <version>1.0.0.1</version>
-    <title>Whetstone.Contracts</title>
+    <id>Whetstone.Math</id>
+    <version>0.0.0.1</version>
+    <title>Whetstone.Math</title>
     <authors>Karl F. A. Friebel</authors>
     <owners>KFAFSP</owners>
     <licenseUrl>https://github.com/KFAFSP/Whetstone/blob/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/KFAFSP/Whetstone</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      Types and extensions for method contract validation.
+      Types and extensions for mathematical operations.
     </description>
     <releaseNotes>
-      Minor project structure changes.
+      First prerelease.
     </releaseNotes>
     <copyright>Copyright (c) Karl F. A. Friebel 2018</copyright>
     <tags></tags>
