@@ -57,7 +57,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Generated\.gitignore" />
     <Content Include="Generated\Math.Gcd.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Math.Gcd.cs</LastGenOutput>
