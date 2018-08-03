@@ -721,7 +721,7 @@ namespace Whetstone.Contracts
         }
 
         [Test]
-        [Description("AndThen on erroneous propagates the error..")]
+        [Description("AndThen on erroneous propagates the error.")]
         public void AndThen_Erroneous_PropagatesError()
         {
             Assert.That(
@@ -742,6 +742,47 @@ namespace Whetstone.Contracts
         }
 
         [Test]
+        [Description("AndThen on null action throws ArgumentNullException.")]
+        public void AndThen2_ActionIsNull_ThrowsArgumentNullException()
+        {
+            Assert.That(() => Result.Ok(0).AndThen(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        [Description("AndThen on successful runs action and propagates IsSuccess.")]
+        public void AndThen2_Successful_PropagatesIsSuccess()
+        {
+            var executed = false;
+
+            Assert.That(Result.Ok(2).AndThen(X => { executed = true; }).IsSuccess, Is.True);
+            Assert.That(executed, Is.True);
+        }
+
+        [Test]
+        [Description("AndThen on erroneous does not run action and propagates the error.")]
+        public void AndThen2_Erroneous_PropagatesError()
+        {
+            var executed = false;
+
+            Assert.That(
+                Result.Fail<int>(_FCommonError).AndThen(X => { executed = true; }).Error,
+                Is.SameAs(_FCommonError)
+            );
+            Assert.That(executed, Is.False);
+        }
+
+        [Test]
+        [Description("AndThen on successful up-propagates an exception thrown in the action.")]
+        public void AndThen2_Successful_PropagatesFunctionException()
+        {
+            var error = new Exception();
+            Assert.That(
+                () => Result.Ok(1).AndThen(X => throw error),
+                Throws.Exception.SameAs(error)
+            );
+        }
+
+        [Test]
         [Description("AndThenTry on null function throws ArgumentNullException.")]
         public void AndThenTry_FunctionIsNull_ThrowsArgumentNullException()
         {
@@ -756,7 +797,7 @@ namespace Whetstone.Contracts
         }
 
         [Test]
-        [Description("AndThenTry on erroneous propagates the error..")]
+        [Description("AndThenTry on erroneous propagates the error.")]
         public void AndThenTry_Erroneous_PropagatesError()
         {
             Assert.That(
@@ -766,12 +807,53 @@ namespace Whetstone.Contracts
         }
 
         [Test]
-        [Description("AndThenTry on successfulwraps an exception thrown in the function.")]
+        [Description("AndThenTry on successful wraps an exception thrown in the function.")]
         public void AndThenTry_Successful_WrapsFunctionException()
         {
             var error = new Exception();
             Assert.That(
                 Result.Ok(1).AndThenTry<object>(X => throw error).Error,
+                Is.SameAs(error)
+            );
+        }
+
+        [Test]
+        [Description("AndThenTry on null action throws ArgumentNullException.")]
+        public void AndThenTry2_ActionIsNull_ThrowsArgumentNullException()
+        {
+            Assert.That(() => Result.Ok(0).AndThenTry(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        [Description("AndThenTry on successful runs action and propagates IsSuccess.")]
+        public void AndThenTry2_Successful_WrapsResult()
+        {
+            var executed = false;
+
+            Assert.That(Result.Ok(2).AndThenTry(X => { executed = true; }).IsSuccess, Is.True);
+            Assert.That(executed, Is.True);
+        }
+
+        [Test]
+        [Description("AndThenTry on erroneous does not run action and propagates the error.")]
+        public void AndThenTry2_Erroneous_PropagatesError()
+        {
+            var executed = false;
+
+            Assert.That(
+                Result.Fail<int>(_FCommonError).AndThenTry(X => { executed = true; }).Error,
+                Is.SameAs(_FCommonError)
+            );
+            Assert.That(executed, Is.False);
+        }
+
+        [Test]
+        [Description("AndThenTry on successful wraps an exception thrown in the action.")]
+        public void AndThenTry2_Successful_WrapsFunctionException()
+        {
+            var error = new Exception();
+            Assert.That(
+                Result.Ok(1).AndThenTry(X => throw error).Error,
                 Is.SameAs(error)
             );
         }
@@ -940,6 +1022,24 @@ namespace Whetstone.Contracts
             Exception error = Result.Ok(0);
 
             Assert.That(error, Is.Null);
+        }
+
+        [Test]
+        [Description("Implicit cast to untyped Result of erroneous propagates the Error.")]
+        public void ImplicitCast_ToResultErroneous_PropagatesError()
+        {
+            Result result = Result.Fail<int>(_FCommonError);
+
+            Assert.That(result.Error, Is.SameAs(_FCommonError));
+        }
+
+        [Test]
+        [Description("Implicit cast to untyped Result of successful propagates IsSuccess.")]
+        public void ImplicitCast_ToResultSuccessful_PropagatesIsSuccess()
+        {
+            Result result = Result.Ok(1);
+
+            Assert.That(result.IsSuccess, Is.True);
         }
 
         [TestCaseSource(nameof(ResResAlikeTestCases))]

@@ -554,6 +554,25 @@ namespace Whetstone.Contracts
                 : new Result<TOut>(UnboxError);
         }
         /// <summary>
+        /// Execute an <see cref="Action{T}"/> on the successful value (if any) or propagate the
+        /// <see cref="Error"/> of this result.
+        /// </summary>
+        /// <param name="AAction">The <see cref="Action{T}"/>.</param>
+        /// <returns>A <see cref="Result"/> that propagates <see cref="Error"/>.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AAction"/> is <see langword="null"/>.
+        /// </exception>
+        [ContractAnnotation("AAction: null => halt;")]
+        public Result AndThen([NotNull] [InstantHandle] Action<T> AAction)
+        {
+            if (AAction == null) throw new ArgumentNullException(nameof(AAction));
+
+            if (!IsSuccess) return new Result(UnboxError);
+
+            AAction(UnboxValue);
+            return new Result(true);
+        }
+        /// <summary>
         /// Compute a <see cref="Func{T, TResult}"/> on the successful value (if any) and propagate
         /// the results, or catch and propagate the error thrown from it.
         /// </summary>
@@ -581,6 +600,35 @@ namespace Whetstone.Contracts
             catch (Exception error)
             {
                 return new Result<TOut>(error);
+            }
+        }
+        /// <summary>
+        /// Execute an <see cref="Action{T}"/> on the successful value (if any) and propagate the
+        /// <see cref="Error"/> of this result, or catch and propagate the error thrown from it.
+        /// </summary>
+        /// <param name="AAction">The <see cref="Action{T}"/>.</param>
+        /// <returns>
+        /// A <see cref="Result"/> propagating the <see cref="Error"/> or propagating the error
+        /// during <paramref name="AAction"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="AAction"/> is <see langword="null"/>.
+        /// </exception>
+        [ContractAnnotation("AAction: null => halt;")]
+        public Result AndThenTry([NotNull] [InstantHandle] Action<T> AAction)
+        {
+            if (AAction == null) throw new ArgumentNullException(nameof(AAction));
+
+            if (!IsSuccess) return new Result(UnboxError);
+
+            try
+            {
+                AAction(UnboxValue);
+                return new Result(true);
+            }
+            catch (Exception error)
+            {
+                return new Result(error);
             }
         }
 
@@ -756,6 +804,14 @@ namespace Whetstone.Contracts
         [ContractAnnotation("AError: null => halt;")]
         public static implicit operator Result<T>([NotNull] Exception AError)
             => new Result<T>(AError);
+
+        /// <summary>
+        /// Implicitly convert a <see cref="Result{T}"/> to an untyped <see cref="Result"/>.
+        /// </summary>
+        /// <param name="AResult">The <see cref="Result{T}"/>.</param>
+        [Pure]
+        public static implicit operator Result(Result<T> AResult)
+            => AResult.IsSuccess ? new Result(true) : new Result(AResult.UnboxError);
 
         /// <summary>
         /// Shorthand for calling <see cref="Result{T}.Equals(Result{T})"/>.
