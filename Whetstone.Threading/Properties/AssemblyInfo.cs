@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 #region Assembly description
-[assembly: AssemblyTitle("Whetstone.Contracts")]
+[assembly: AssemblyTitle("Whetstone.Threading")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
