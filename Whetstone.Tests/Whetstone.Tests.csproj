@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -42,11 +44,21 @@
     <Compile Include="Contracts\Optional.cs" />
     <Compile Include="Contracts\Result.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Threading\Era.cs" />
+    <Compile Include="Threading\TaskExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Whetstone.Contracts\Whetstone.Contracts.csproj">
       <Project>{4e398de9-a03f-417e-81a1-aa1e01daf4d6}</Project>
       <Name>Whetstone.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Whetstone.Math\Whetstone.Math.csproj">
+      <Project>{ed80ac99-39bb-4d00-a86b-66393387ffe0}</Project>
+      <Name>Whetstone.Math</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Whetstone.Threading\Whetstone.Threading.csproj">
+      <Project>{6672ad48-5fae-46d3-bc95-c28335d77db2}</Project>
+      <Name>Whetstone.Threading</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -27,7 +27,7 @@ namespace Whetstone.Threading
         /// <paramref name="ATask"/>!
         /// </remarks>
         [NotNull]
-        public static Task OrCancelledBy(
+        public static Task OrCanceledBy(
             [NotNull] this Task ATask,
             CancellationToken ACancel
         )
@@ -42,7 +42,7 @@ namespace Whetstone.Threading
             {
                 using (ACancel.Register(() => tcs.TrySetCanceled(ACancel)))
                 {
-                    await Task.WhenAny(ATask, tcs.Task);
+                    await await Task.WhenAny(ATask, tcs.Task);
                 }
             }
 
@@ -64,24 +64,17 @@ namespace Whetstone.Threading
         /// <paramref name="ATask"/>!
         /// </remarks>
         [NotNull]
-        public static Task<TResult> OrCancelledBy<TResult>(
+        public static Task<TResult> OrCanceledBy<TResult>(
             [NotNull] this Task<TResult> ATask,
             CancellationToken ACancel
         )
         {
-            // Quick return: the task is completed or the new cancellation mode is useless.
-            if (ATask.IsCompleted || !ACancel.CanBeCanceled) return ATask;
-            // Quick return: the cancellation was already requested.
-            if (ACancel.IsCancellationRequested) return Task.FromCanceled<TResult>(ACancel);
-
-            var tcs = new TaskCompletionSource<TResult>();
+            var task = ATask as Task;
 
             async Task<TResult> Internal()
             {
-                using (ACancel.Register(() => tcs.TrySetCanceled(ACancel)))
-                {
-                    return await Task.WhenAny(ATask, tcs.Task).Result;
-                }
+                await task.OrCanceledBy(ACancel);
+                return ATask.Result;
             }
 
             return Internal();

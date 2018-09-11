@@ -65,7 +65,7 @@ namespace Whetstone.Threading
 
         #region IAwaitable
         /// <inheritdoc />
-        public Task WaitAsync(CancellationToken ACancel) => FSource.Task.OrCancelledBy(ACancel);
+        public Task WaitAsync(CancellationToken ACancel) => FSource.Task.OrCanceledBy(ACancel);
         #endregion
 
         /// <summary>

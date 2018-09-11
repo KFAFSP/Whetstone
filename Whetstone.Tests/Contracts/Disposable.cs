@@ -9,6 +9,7 @@ namespace Whetstone.Contracts
 {
     [TestFixture]
     [Description("Testing the Disposable base class.")]
+    [Category("Contracts")]
     [TestOf(typeof(Disposable))]
     public sealed class DisposableTests
     {

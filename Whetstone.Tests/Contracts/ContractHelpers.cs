@@ -30,7 +30,7 @@ namespace Whetstone.Contracts
         [Description("IsConstrainedBy of any to any type is correct.")]
         public void IsConstrainedBy_AnyToType_Correct()
         {
-            object anon = new object();
+            var anon = new object();
             object boxed = 1;
 
             Assert.That(anon.IsConstrainedBy<object>(), Is.True);

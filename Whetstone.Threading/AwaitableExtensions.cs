@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,6 +12,7 @@ namespace Whetstone.Threading
     /// <see cref="IAwaitable{TResult}"/> types.
     /// </summary>
     [PublicAPI]
+    [ExcludeFromCodeCoverage]
     public static class AwaitableExtensions
     {
         /// <summary>
@@ -25,7 +27,7 @@ namespace Whetstone.Threading
         /// </summary>
         /// <param name="AAwaitable">The <see cref="IAwaitable"/>.</param>
         /// <param name="ACancel">A <see cref="CancellationToken"/> to cancel the wait.</param>
-        /// <exception cref="OperationCanceledException">The wait was cancelled.</exception>
+        /// <exception cref="OperationCanceledException">The wait was canceled.</exception>
         /// <exception cref="ObjectDisposedException">
         /// The <see cref="CancellationTokenSource"/> of <paramref name="ACancel"/> is disposed.
         /// </exception>
@@ -55,7 +57,7 @@ namespace Whetstone.Threading
         /// <typeparam name="TResult">The awaitable result type.</typeparam>
         /// <param name="AAwaitable">The <see cref="IAwaitable{TResult}"/>.</param>
         /// <param name="ACancel">A <see cref="CancellationToken"/> to cancel the wait.</param>
-        /// <exception cref="OperationCanceledException">The wait was cancelled.</exception>
+        /// <exception cref="OperationCanceledException">The wait was canceled.</exception>
         /// <exception cref="ObjectDisposedException">
         /// The <see cref="CancellationTokenSource"/> of <paramref name="ACancel"/> is disposed.
         /// </exception>
