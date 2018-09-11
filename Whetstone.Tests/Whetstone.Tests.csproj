@@ -46,6 +46,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\Condition.cs" />
     <Compile Include="Threading\Era.cs" />
+    <Compile Include="Threading\Event.cs" />
+    <Compile Include="Threading\Future.cs" />
     <Compile Include="Threading\TaskExtensions.cs" />
     <Compile Include="Threading\Trigger.cs" />
   </ItemGroup>

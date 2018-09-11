@@ -31,8 +31,21 @@ namespace Whetstone.Threading
         /// <exception cref="ObjectDisposedException">
         /// The <see cref="CancellationTokenSource"/> of <paramref name="ACancel"/> is disposed.
         /// </exception>
+        /// <remarks>
+        /// If required, internal exceptions that were wrapped in a <see cref="AggregateException"/>
+        /// are unwrapped and rethrown.
+        /// </remarks>
         public static void Wait([NotNull] this IAwaitable AAwaitable, CancellationToken ACancel)
-            => AAwaitable.WaitAsync(ACancel).Wait(ACancel);
+        {
+            try
+            {
+                AAwaitable.WaitAsync(ACancel).Wait(ACancel);
+            }
+            catch (AggregateException error)
+            {
+                throw error.InnerException ?? error;
+            }
+        }
 
         /// <summary>
         /// Wait for the event.
@@ -48,7 +61,7 @@ namespace Whetstone.Threading
         /// </summary>
         /// <typeparam name="TResult">The awaitable result type.</typeparam>
         /// <param name="AAwaitable">The <see cref="IAwaitable{TResult}"/>.</param>
-        public static void Wait<TResult>([NotNull] this IAwaitable<TResult> AAwaitable)
+        public static TResult Wait<TResult>([NotNull] this IAwaitable<TResult> AAwaitable)
             => AAwaitable.Wait(CancellationToken.None);
 
         /// <summary>
@@ -61,10 +74,26 @@ namespace Whetstone.Threading
         /// <exception cref="ObjectDisposedException">
         /// The <see cref="CancellationTokenSource"/> of <paramref name="ACancel"/> is disposed.
         /// </exception>
-        public static void Wait<TResult>(
+        /// <remarks>
+        /// If required, internal exceptions that were wrapped in a <see cref="AggregateException"/>
+        /// are unwrapped and rethrown.
+        /// </remarks>
+        public static TResult Wait<TResult>(
             [NotNull] this IAwaitable<TResult> AAwaitable,
             CancellationToken ACancel
-        ) => AAwaitable.WaitAsync(ACancel).Wait(ACancel);
+        )
+        {
+            try
+            {
+                var task = AAwaitable.WaitAsync(ACancel);
+                task.Wait(ACancel);
+                return task.Result;
+            }
+            catch (AggregateException error)
+            {
+                throw error.InnerException ?? error;
+            }
+        }
 
         /// <summary>
         /// Wait for the result.

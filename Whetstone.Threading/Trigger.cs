@@ -11,12 +11,16 @@ namespace Whetstone.Threading
     /// <summary>
     /// Represents an awaitable trigger that can be fire multiple times.
     /// </summary>
+    /// <remarks>
+    /// If the events coincide with a produced value, consider using <see cref="Event{TValue}"/>
+    /// instead.
+    /// </remarks>
     [PublicAPI]
     public sealed class Trigger : Disposable, IAwaitable
     {
-        // NOTE: Atomically exchanged reference by Fire().
+        // NOTE: Atomically exchanged reference to the current era.
         [NotNull]
-        volatile Era FEra = new Era();
+        Era FEra = new Era();
 
         #region Disposable overrides
         /// <inheritdoc />
@@ -44,7 +48,8 @@ namespace Whetstone.Threading
         {
             ThrowIfDisposed();
 
-            if (FEra.TryEnd()) FEra = new Era();
+            var old = Interlocked.Exchange(ref FEra, new Era());
+            old.TryEnd();
         }
 
         #region IAwaitable

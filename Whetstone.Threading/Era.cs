@@ -12,6 +12,10 @@ namespace Whetstone.Threading
     /// <summary>
     /// Represents an era that starts with it's creation and can be ended once.
     /// </summary>
+    /// <remarks>
+    /// If the end of the era concides with the production of a value, use
+    /// <see cref="Future{TValue}"/> instead.
+    /// </remarks>
     [PublicAPI]
     public sealed class Era : Disposable, IAwaitable
     {
@@ -34,6 +38,7 @@ namespace Whetstone.Threading
             }
         }
 
+        [NotNull]
         readonly TaskCompletionSource<Void> FSource = new TaskCompletionSource<Void>();
 
         #region Disposable overrides
