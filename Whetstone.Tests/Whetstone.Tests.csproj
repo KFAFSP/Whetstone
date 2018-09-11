@@ -46,6 +46,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Threading\Era.cs" />
     <Compile Include="Threading\TaskExtensions.cs" />
+    <Compile Include="Threading\Trigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Whetstone.Contracts\Whetstone.Contracts.csproj">
