@@ -14,9 +14,29 @@ namespace Whetstone.Threading
     [PublicAPI]
     public sealed class Condition : Disposable, IAwaitable
     {
+        /// <summary>
+        /// Get a new <see cref="Condition"/> that is <see langword="true"/>.
+        /// </summary>
+        [NotNull]
+        public static Condition True => new Condition(true);
+        /// <summary>
+        /// Get a new <see cref="Condition"/> that is <see langword="false"/>.
+        /// </summary>
+        [NotNull]
+        public static Condition False => new Condition();
+
         int FValue;
         [NotNull]
         readonly Trigger FTrigger = new Trigger();
+
+        /// <summary>
+        /// Create a new <see cref="Condition"/>.
+        /// </summary>
+        /// <param name="AInitialValue">The initial value of the condition.</param>
+        public Condition(bool AInitialValue = false)
+        {
+            FValue = AInitialValue ? 1 : 0;
+        }
 
         #region Disposable overrides
         /// <inheritdoc />
@@ -98,5 +118,11 @@ namespace Whetstone.Threading
                     TryReset();
             }
         }
+
+        /// <summary>
+        /// Implicitly convert this <see cref="Condition"/> to it's <see cref="Value"/>.
+        /// </summary>
+        /// <param name="ACondition">The <see cref="Condition"/>.</param>
+        public static implicit operator bool([NotNull] Condition ACondition) => ACondition.Value;
     }
 }

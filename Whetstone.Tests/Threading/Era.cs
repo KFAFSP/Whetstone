@@ -10,33 +10,44 @@ namespace Whetstone.Threading
     [TestOf(typeof(Era))]
     public sealed class EraTests
     {
-        Era FInstance;
-
-        [SetUp]
-        public void Setup()
-        {
-            FInstance = new Era();
-        }
-
         [Test]
         [Description("Default constructor initializes an unended era.")]
         public void Constructor_Default_HasNotEnded()
         {
-            Assert.That(FInstance.HasEnded, Is.False);
+            using (var era = new Era())
+            {
+                Assert.That(era.HasEnded, Is.False);
+            }
+        }
+
+        [Test]
+        [Description("Dispose faults all remaining waiters.")]
+        public void Dispose_FaultsWaiters()
+        {
+            var era = new Era();
+            var task = era.WaitAsync();
+            era.Dispose();
+
+            Assert.Throws<AggregateException>(() => task.Wait(10));
+            Assert.That(
+                task.Exception?.InnerExceptions[0],
+                Is.InstanceOf<ObjectDisposedException>()
+            );
         }
 
         [Test]
         [Description("Dispose on unended era ends the era.")]
         public void Dispose_NotEnded_EndsEra()
         {
-            Assume.That(FInstance.HasEnded, Is.False);
+            var era = new Era();
+            Assume.That(era.HasEnded, Is.False);
 
-            FInstance.Dispose();
-            Assert.That(FInstance.HasEnded, Is.True);
+            era.Dispose();
+            Assert.That(era.HasEnded, Is.True);
         }
 
         [Test]
-        [Description("Ended returns an ended era.")]
+        [Description("Ended creates an ended era.")]
         public void Ended_HasEnded()
         {
             Assert.That(Era.Ended.HasEnded, Is.True);
@@ -46,29 +57,35 @@ namespace Whetstone.Threading
         [Description("TryEnd on unended ends and returns true.")]
         public void TryEnd_NotEnded_EndsAndReturnsTrue()
         {
-            Assume.That(FInstance.HasEnded, Is.False);
+            using (var era = new Era())
+            {
+                Assume.That(era.HasEnded, Is.False);
 
-            Assert.That(FInstance.TryEnd(), Is.True);
-            Assert.That(FInstance.HasEnded, Is.True);
+                Assert.That(era.TryEnd(), Is.True);
+                Assert.That(era.HasEnded, Is.True);
+            }
         }
 
         [Test]
         [Description("TryEnd on ended returns false.")]
         public void TryEnd_Ended_ReturnsFalse()
         {
-            FInstance.TryEnd();
-            Assume.That(FInstance.HasEnded, Is.True);
+            using (var era = Era.Ended)
+            {
+                Assume.That(era.HasEnded, Is.True);
 
-            Assert.That(FInstance.TryEnd(), Is.False);
+                Assert.That(era.TryEnd(), Is.False);
+            }
         }
 
         [Test]
         [Description("WaitAsync on disposed returns a faulted task.")]
         public void WaitAsync_Disposed_ReturnsFaultedTask()
         {
-            FInstance.Dispose();
+            var era = new Era();
+            era.Dispose();
 
-            var task = FInstance.WaitAsync();
+            var task = era.WaitAsync();
             Assert.That(task.IsFaulted, Is.True);
             Assert.That(
                 task.Exception?.InnerExceptions[0],
@@ -80,24 +97,29 @@ namespace Whetstone.Threading
         [Description("WaitAsync on ended returns a completed task.")]
         public void WaitAsync_Ended_ReturnsCompletedTask()
         {
-            FInstance.TryEnd();
-            Assume.That(FInstance.HasEnded, Is.True);
+            using (var era = Era.Ended)
+            {
+                Assume.That(era.HasEnded, Is.True);
 
-            var task = FInstance.WaitAsync();
-            Assert.That(task.IsCompleted, Is.True);
+                var task = era.WaitAsync();
+                Assert.That(task.IsCompleted, Is.True);
+            }
         }
 
         [Test]
         [Description("WaitAsync on unended waits for the end.")]
         public void WaitAsync_NotEnded_WaitsForEnd()
         {
-            Assume.That(FInstance.HasEnded, Is.False);
+            using (var era = new Era())
+            {
+                Assume.That(era.HasEnded, Is.False);
 
-            var task = FInstance.WaitAsync();
-            Assert.That(task.Wait(10), Is.False);
+                var task = era.WaitAsync();
+                Assert.That(task.Wait(10), Is.False);
 
-            FInstance.TryEnd();
-            Assert.That(task.Wait(10), Is.True);
+                era.TryEnd();
+                Assert.That(task.Wait(10), Is.True);
+            }
         }
     }
 }
