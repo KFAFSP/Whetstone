@@ -42,7 +42,8 @@ namespace Whetstone.Threading
             {
                 using (ACancel.Register(() => tcs.TrySetCanceled(ACancel)))
                 {
-                    await await Task.WhenAny(ATask, tcs.Task);
+                    var completed = await Task.WhenAny(ATask, tcs.Task).ConfigureAwait(false);
+                    await completed.ConfigureAwait(false);
                 }
             }
 
@@ -73,7 +74,7 @@ namespace Whetstone.Threading
 
             async Task<TResult> Internal()
             {
-                await task.OrCanceledBy(ACancel);
+                await task.OrCanceledBy(ACancel).ConfigureAwait(false);
                 return ATask.Result;
             }
 
