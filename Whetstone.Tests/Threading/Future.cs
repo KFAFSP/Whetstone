@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -122,6 +123,21 @@ namespace Whetstone.Threading
                 future.TryPost(0);
                 Assert.That(task.Wait(10), Is.True);
             }
+        }
+
+        [Test]
+        [Description("Is an awaitable type.")]
+        public void Awaitable()
+        {
+            var task = Task.Run(async () =>
+            {
+                using (var future = Future.Of(1))
+                {
+                    var value = await future;
+                    Assert.That(value, Is.EqualTo(1));
+                }
+            });
+            Assert.That(task.Wait(10), Is.True);
         }
 
         [Test]

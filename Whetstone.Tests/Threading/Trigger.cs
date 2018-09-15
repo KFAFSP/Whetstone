@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -63,6 +64,24 @@ namespace Whetstone.Threading
                 var task2 = trigger.WaitAsync();
                 Assert.That(task.Wait(10), Is.True);
                 Assert.That(task2.Wait(10), Is.False);
+            }
+        }
+
+        [Test]
+        [Description("Is an awaitable type.")]
+        public void Awaitable()
+        {
+            using (var trigger = new Trigger())
+            {
+                var task = Task.Run(async () =>
+                {
+                    // NOTE: We wait for the task to complete before exiting the using scope.
+                    // ReSharper disable once AccessToDisposedClosure
+                    await trigger;
+                });
+                Assert.That(task.Wait(10), Is.False);
+                trigger.Fire();
+                Assert.That(task.Wait(10), Is.True);
             }
         }
     }

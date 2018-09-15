@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -171,6 +172,20 @@ namespace Whetstone.Threading
                 Assume.That(cond.TrySet(), Is.True);
                 Assert.That(task.Wait(10), Is.True);
             }
+        }
+
+        [Test]
+        [Description("Is an awaitable type.")]
+        public void Awaitable()
+        {
+            var task = Task.Run(async () =>
+            {
+                using (var cond = Condition.True())
+                {
+                    await cond;
+                }
+            });
+            Assert.That(task.Wait(10), Is.True);
         }
 
         [TestCase(true)]

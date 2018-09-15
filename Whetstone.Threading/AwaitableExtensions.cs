@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -105,5 +106,23 @@ namespace Whetstone.Threading
         public static Task<TResult> WaitAsync<TResult>(
             [NotNull] this IAwaitable<TResult> AAwaitable
         ) => AAwaitable.WaitAsync(CancellationToken.None);
+
+        /// <summary>
+        /// Get an awaiter for this <see cref="IAwaitable"/>.
+        /// </summary>
+        /// <param name="AAwaitable">The <see cref="IAwaitable"/>.</param>
+        /// <returns>An awaiter for <paramref name="AAwaitable"/>.</returns>
+        public static TaskAwaiter GetAwaiter([NotNull] this IAwaitable AAwaitable)
+            => AAwaitable.WaitAsync().GetAwaiter();
+
+        /// <summary>
+        /// Get an awaiter for this <see cref="IAwaitable{TResult}"/>.
+        /// </summary>
+        /// <typeparam name="TResult">The awaitable result type.</typeparam>
+        /// <param name="AAwaitable">The <see cref="IAwaitable{TResult}"/>.</param>
+        /// <returns>An awaiter for <paramref name="AAwaitable"/>.</returns>
+        public static TaskAwaiter<TResult> GetAwaiter<TResult>(
+            [NotNull] this IAwaitable<TResult> AAwaitable
+        ) => AAwaitable.WaitAsync().GetAwaiter();
     }
 }

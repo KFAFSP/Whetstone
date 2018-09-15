@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 
@@ -123,6 +124,20 @@ namespace Whetstone.Threading
                 era.TryEnd();
                 Assert.That(task.Wait(10), Is.True);
             }
+        }
+
+        [Test]
+        [Description("Is an awaitable type.")]
+        public void Awaitable()
+        {
+            var task = Task.Run(async () =>
+            {
+                using (var era = Era.Ended())
+                {
+                    await era;
+                }
+            });
+            Assert.That(task.Wait(10), Is.True);
         }
     }
 }
