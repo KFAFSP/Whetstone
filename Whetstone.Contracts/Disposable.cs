@@ -85,8 +85,8 @@ namespace Whetstone.Contracts
         #region IDisposable
         /// <inheritdoc />
         /* Note: We do this correctly, but relieve Dispose(bool) of the check to make overriding
-                 even simpler - it wont have to do anything if there is nothing to do, and might
-                 as well not even be implemented.
+                 even simpler - it wont have to do anything if there is no real work to do, and
+                 might as well not even be overridden at all.
          */
         [
             SuppressMessage(
@@ -98,12 +98,12 @@ namespace Whetstone.Contracts
         {
             // Multiple calls to Dispose() SHALL NOT throw.
             if (IsDisposed) return;
+            IsDisposed = true;
 
             Dispose(true);
 
             // The finalizer SHALL NOT be invoked.
             GC.SuppressFinalize(this);
-            IsDisposed = true;
         }
         #endregion
 
