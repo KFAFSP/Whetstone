@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Whetstone.Math</id>
+    <id>Whetstone.Threading</id>
     <version>1.0.0.3</version>
     <title>Whetstone.Math</title>
     <authors>Karl F. A. Friebel</authors>
@@ -13,7 +13,7 @@
       Types and extensions for mathematical operations.
     </description>
     <releaseNotes>
-      Minor version bump.
+      Initial release.
     </releaseNotes>
     <copyright>Copyright (c) Karl F. A. Friebel 2018</copyright>
     <tags></tags>

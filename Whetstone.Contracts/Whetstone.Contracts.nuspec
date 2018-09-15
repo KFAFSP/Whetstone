@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Whetstone.Contracts</id>
-    <version>1.0.0.2</version>
+    <version>1.0.0.3</version>
     <title>Whetstone.Contracts</title>
     <authors>Karl F. A. Friebel</authors>
     <owners>KFAFSP</owners>
@@ -13,7 +13,7 @@
       Types and extensions for method contract validation.
     </description>
     <releaseNotes>
-      Added more integration for untyped Result.
+      Fixes for the Disposable type.
     </releaseNotes>
     <copyright>Copyright (c) Karl F. A. Friebel 2018</copyright>
     <tags></tags>
