@@ -29,7 +29,7 @@ namespace Whetstone.Threading
         [Description("Dispose faults all remaining waiters.")]
         public void Dispose_False_FaultsWaiters()
         {
-            var cond = Condition.False;
+            var cond = Condition.False();
             Assume.That(cond.Value, Is.False);
 
             var task = cond.WaitAsync();
@@ -46,14 +46,17 @@ namespace Whetstone.Threading
         [Description("False creates a condition that is false.")]
         public void False_IsFalse()
         {
-            Assert.That(Condition.False.Value, Is.False);
+            Assert.That(Condition.False().Value, Is.False);
         }
 
         [Test]
         [Description("True creates a condition that is true.")]
         public void True_IsTrue()
         {
-            Assert.That(Condition.True.Value, Is.True);
+            using (var cond = Condition.True())
+            {
+                Assert.That(cond.Value, Is.True);
+            }
         }
 
         [Test]
@@ -70,7 +73,7 @@ namespace Whetstone.Threading
         [Description("TryReset on false returns false.")]
         public void TryReset_False_ReturnsFalse()
         {
-            using (var cond = Condition.False)
+            using (var cond = Condition.False())
             {
                 Assume.That(cond.Value, Is.False);
 
@@ -82,7 +85,7 @@ namespace Whetstone.Threading
         [Description("TryReset on true resets to false and returns true.")]
         public void TryReset_True_ResetsAndReturnsTrue()
         {
-            using (var cond = Condition.True)
+            using (var cond = Condition.True())
             {
                 Assume.That(cond.Value, Is.True);
 
@@ -105,7 +108,7 @@ namespace Whetstone.Threading
         [Description("TrySet on false sets to true and returns true.")]
         public void TrySet_False_SetsAndReturnsTrue()
         {
-            using (var cond = Condition.False)
+            using (var cond = Condition.False())
             {
                 Assume.That(cond.Value, Is.False);
 
@@ -118,7 +121,7 @@ namespace Whetstone.Threading
         [Description("TrySet on true returns false.")]
         public void TrySet_True_ReturnsFalse()
         {
-            using (var cond = Condition.True)
+            using (var cond = Condition.True())
             {
                 Assume.That(cond.Value, Is.True);
 
@@ -145,7 +148,7 @@ namespace Whetstone.Threading
         [Description("WaitAsync on true returns a completed task.")]
         public void WaitAsync_True_ReturnsCompletedTask()
         {
-            using (var cond = Condition.True)
+            using (var cond = Condition.True())
             {
                 Assume.That(cond.Value, Is.True);
 
@@ -158,7 +161,7 @@ namespace Whetstone.Threading
         [Description("WaitAsync on false waits for change to true.")]
         public void WaitAsync_False_WaitsForTrue()
         {
-            using (var cond = Condition.False)
+            using (var cond = Condition.False())
             {
                 Assume.That(cond.Value, Is.False);
 

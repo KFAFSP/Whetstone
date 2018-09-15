@@ -50,7 +50,10 @@ namespace Whetstone.Threading
         [Description("Ended creates an ended era.")]
         public void Ended_HasEnded()
         {
-            Assert.That(Era.Ended.HasEnded, Is.True);
+            using (var era = Era.Ended())
+            {
+                Assert.That(era.HasEnded, Is.True);
+            }
         }
 
         [Test]
@@ -70,7 +73,7 @@ namespace Whetstone.Threading
         [Description("TryEnd on ended returns false.")]
         public void TryEnd_Ended_ReturnsFalse()
         {
-            using (var era = Era.Ended)
+            using (var era = Era.Ended())
             {
                 Assume.That(era.HasEnded, Is.True);
 
@@ -97,7 +100,7 @@ namespace Whetstone.Threading
         [Description("WaitAsync on ended returns a completed task.")]
         public void WaitAsync_Ended_ReturnsCompletedTask()
         {
-            using (var era = Era.Ended)
+            using (var era = Era.Ended())
             {
                 Assume.That(era.HasEnded, Is.True);
 

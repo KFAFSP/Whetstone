@@ -18,12 +18,12 @@ namespace Whetstone.Threading
         /// Get a new <see cref="Condition"/> that is <see langword="true"/>.
         /// </summary>
         [NotNull]
-        public static Condition True => new Condition(true);
+        public static Condition True() => new Condition(true);
         /// <summary>
         /// Get a new <see cref="Condition"/> that is <see langword="false"/>.
         /// </summary>
         [NotNull]
-        public static Condition False => new Condition();
+        public static Condition False() => new Condition();
 
         int FValue;
         [NotNull]

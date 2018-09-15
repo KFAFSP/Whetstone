@@ -23,19 +23,16 @@ namespace Whetstone.Threading
         /// Get a new <see cref="Era"/> that has ended.
         /// </summary>
         [NotNull]
-        public static Era Ended
+        public static Era Ended()
         {
-            get
-            {
-                var era = new Era();
-                var ok = era.TryEnd();
-                Debug.Assert(
-                    ok,
-                    "Era contested.",
-                    "This indicates a severe runtime problem."
-                );
-                return era;
-            }
+            var era = new Era();
+            var ok = era.TryEnd();
+            Debug.Assert(
+                ok,
+                "Era contested.",
+                "This indicates a severe runtime problem."
+            );
+            return era;
         }
 
         [NotNull]
